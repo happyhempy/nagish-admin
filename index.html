@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,41 +7,57 @@
 <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
 <title>Nagish</title>
 <style>
-  :root{--bg:#f1f1f1;--card:#fff;--text:#303030;--muted:#616161;--border:#e3e3e3;--accent:#1f5fbf;--ok:#0c7a43;--warn-bg:#fff4e5;--warn:#8a4b00}
+  :root{--bg:#f1f1f1;--card:#fff;--text:#1f1f1f;--muted:#5c5c5c;--border:#dcdcdc;--accent:#1f5fbf;--accent-soft:#eaf1fc;--ok:#0c7a43;--ok-soft:#e6f4ec;--warn-bg:#fff4e5;--warn:#7a4300}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-  main{max-width:960px;margin:0 auto;padding:20px 16px 60px}
-  h1{font-size:20px;margin:0 0 4px}
-  h2{font-size:16px;margin:0 0 8px}
-  p{margin:0 0 10px}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+  h1{font-size:24px;margin:0 0 4px;line-height:1.3}
+  h2{font-size:21px;margin:0 0 8px;line-height:1.35}
+  h3{font-size:17px;margin:0 0 6px}
+  p{margin:0 0 12px}
   .muted{color:var(--muted)}
-  .top select{width:auto}
-  .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-  .card{background:var(--card);border-radius:12px;box-shadow:0 1px 0 rgba(0,0,0,.07),0 0 0 1px var(--border);padding:16px;margin-bottom:16px}
-  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-  .step{border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
-  .step b{font-size:15px}
-  button,.btn{font:inherit;border-radius:8px;padding:8px 14px;border:1px solid #8a8a8a;background:#fff;color:var(--text);cursor:pointer;min-height:36px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
-  button.primary{background:#303030;color:#fff;border-color:#303030}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}
+  .top select{width:auto;font-size:14px;padding:6px 8px}
+  .card{background:var(--card);border-radius:14px;box-shadow:0 1px 0 rgba(0,0,0,.06),0 0 0 1px var(--border);padding:22px;margin-bottom:16px}
+  .progress{display:flex;gap:6px;margin-bottom:16px;list-style:none;padding:0}
+  .progress li{flex:1;text-align:center;font-size:13px;color:var(--muted)}
+  .progress li::before{content:"";display:block;height:6px;border-radius:3px;background:#d6d6d6;margin-bottom:6px}
+  .progress li.on{color:var(--text);font-weight:600}
+  .progress li.on::before{background:var(--accent)}
+  .progress li.done::before{background:var(--ok)}
+  .badge{display:inline-block;font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:20px;padding:2px 12px;margin-bottom:10px}
+  ol.how{margin:0 0 16px;padding-inline-start:22px}
+  ol.how li{margin-bottom:6px}
+  .why{background:#f7f7f7;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:15px}
+  button,.btn{font:inherit;font-size:16px;border-radius:10px;padding:10px 18px;border:1px solid #8a8a8a;background:#fff;color:var(--text);cursor:pointer;min-height:46px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+  button.primary,.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+  button.big{font-size:18px;padding:14px 24px;min-height:56px}
+  button.link{border:0;background:none;color:var(--accent);text-decoration:underline;padding:6px 0;min-height:0}
   button:disabled{opacity:.5;cursor:default}
-  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-  .tabs button[aria-selected="true"]{background:#303030;color:#fff;border-color:#303030}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:640px){.grid{grid-template-columns:1fr}}
-  label{display:block;font-weight:600;margin-bottom:4px}
-  .field{margin-bottom:12px}
-  input[type=text],input[type=email],input[type=tel],input[type=date],select,textarea{width:100%;font:inherit;padding:8px 10px;border:1px solid #8a8a8a;border-radius:8px;background:#fff;color:var(--text)}
-  textarea{min-height:90px;resize:vertical}
-  .checks label{font-weight:400;display:flex;gap:8px;align-items:flex-start;margin:6px 0}
-  .checks input{margin-top:3px}
-  .hint{font-size:12px;color:var(--muted);margin-top:2px}
-  .preview{border:1px solid var(--border);border-radius:10px;padding:16px;max-height:520px;overflow:auto;background:#fafafa}
-  .preview h2{font-size:15px;margin:14px 0 6px}
-  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
-  .note{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:12px;margin-bottom:16px}
-  .status{font-weight:600}
-  .status.ok{color:var(--ok)}
+  button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:22px;flex-wrap:wrap}
+  .q{margin-bottom:22px}
+  .q > label:not(.choice),.q > .label{display:block;font-weight:700;font-size:17px;margin-bottom:4px}
+  .hint{font-size:14px;color:var(--muted);margin:0 0 8px}
+  input[type=text],input[type=email],input[type=tel],input[type=date],select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid #8a8a8a;border-radius:10px;background:#fff;color:var(--text)}
+  textarea{min-height:100px;resize:vertical}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:600px){.two{grid-template-columns:1fr}}
+  .choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;background:#fff}
+  .choice:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+  .choice input{width:20px;height:20px;margin:3px 0 0;flex:none;accent-color:var(--accent)}
+  .choice b{display:block}
+  .choice span span{display:block;font-size:14px;color:var(--muted)}
+  details{border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:16px}
+  summary{cursor:pointer;font-weight:600}
+  details[open] summary{margin-bottom:12px}
+  .preview{border:1px solid var(--border);border-radius:10px;padding:18px;max-height:480px;overflow:auto;background:#fafafa;font-size:15px}
+  .preview h2{font-size:17px;margin:16px 0 6px}
+  .note{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:15px}
+  .success{background:var(--ok-soft);color:var(--ok);border-radius:12px;padding:16px;margin:16px 0;font-weight:600}
+  .done-mark{color:var(--ok);font-weight:700}
+  .summary-list{list-style:none;padding:0;margin:0 0 16px}
+  .summary-list li{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--border);padding:12px 0;flex-wrap:wrap}
   [hidden]{display:none!important}
 </style>
 </head>
@@ -52,109 +68,175 @@
       <h1 data-t="title"></h1>
       <p class="muted" data-t="subtitle"></p>
     </div>
-    <select id="ui-lang" aria-label="Language / שפה">
-      <option value="en">English</option>
+    <select id="ui-lang" aria-label="שפה / Language">
       <option value="he">עברית</option>
+      <option value="en">English</option>
     </select>
   </div>
 
-  <section class="card" aria-labelledby="setup-h">
-    <h2 id="setup-h" data-t="setupTitle"></h2>
-    <div class="steps">
-      <div class="step">
-        <b data-t="step1"></b>
-        <p class="muted" data-t="step1Text"></p>
-        <button type="button" class="primary" data-embed="accessibility" data-t="openEditor"></button>
-      </div>
-      <div class="step">
-        <b data-t="step2"></b>
-        <p class="muted" data-t="step2Text"></p>
-        <button type="button" data-embed="cookies" data-t="openEditor"></button>
-      </div>
-      <div class="step">
-        <b data-t="step3"></b>
-        <p class="muted" data-t="step3Text"></p>
-        <p class="status" id="statement-status"></p>
-      </div>
+  <ol class="progress" id="progress" aria-label="steps">
+    <li data-p="1" data-t="p1"></li>
+    <li data-p="2" data-t="p2"></li>
+    <li data-p="3" data-t="p3"></li>
+    <li data-p="4" data-t="p4"></li>
+  </ol>
+
+  <!-- STEP 1: toolbar -->
+  <section class="card step" data-step="1" aria-labelledby="s1-h">
+    <span class="badge" data-t="stepOf1"></span>
+    <h2 id="s1-h" data-t="s1Title"></h2>
+    <p data-t="s1Intro"></p>
+    <h3 data-t="whatToDo"></h3>
+    <ol class="how">
+      <li data-t="s1a"></li>
+      <li data-t="s1b"></li>
+      <li data-t="s1c"></li>
+      <li data-t="s1d"></li>
+      <li data-t="s1e"></li>
+    </ol>
+    <button type="button" class="primary big" data-embed="accessibility" data-t="openEditor"></button>
+    <div class="nav">
+      <span></span>
+      <button type="button" class="primary" data-next="2" data-t="s1Done"></button>
     </div>
   </section>
 
-  <div class="note" data-t="legalNote"></div>
+  <!-- STEP 2: cookies -->
+  <section class="card step" data-step="2" aria-labelledby="s2-h" hidden>
+    <span class="badge" data-t="stepOf2"></span>
+    <h2 id="s2-h" data-t="s2Title"></h2>
+    <p data-t="s2Intro"></p>
+    <div class="why" data-t="s2Why"></div>
+    <h3 data-t="whatToDo"></h3>
+    <ol class="how">
+      <li data-t="s1a"></li>
+      <li data-t="s2b"></li>
+      <li data-t="s1e"></li>
+    </ol>
+    <button type="button" class="primary big" data-embed="cookies" data-t="openEditor"></button>
+    <div class="nav">
+      <button type="button" data-next="1" data-t="back"></button>
+      <span style="display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" data-next="3" data-t="skip"></button>
+        <button type="button" class="primary" data-next="3" data-t="s2Done"></button>
+      </span>
+    </div>
+  </section>
 
-  <section class="card" aria-labelledby="st-h">
-    <h2 id="st-h" data-t="statementTitle"></h2>
-    <div class="tabs" role="tablist">
-      <button type="button" role="tab" id="tab-gen" aria-selected="true" aria-controls="pane-gen" data-t="tabGenerate"></button>
-      <button type="button" role="tab" id="tab-paste" aria-selected="false" aria-controls="pane-paste" data-t="tabPaste"></button>
+  <!-- STEP 3: statement -->
+  <section class="card step" data-step="3" aria-labelledby="s3-h" hidden>
+    <span class="badge" data-t="stepOf3"></span>
+    <h2 id="s3-h" data-t="s3Title"></h2>
+    <p data-t="s3Intro"></p>
+
+    <div class="q" role="radiogroup" aria-labelledby="q-have">
+      <span class="label" id="q-have" data-t="qHave"></span>
+      <label class="choice"><input type="radio" name="mode" value="gen" checked><span><b data-t="haveNo"></b><span data-t="haveNoText"></span></span></label>
+      <label class="choice"><input type="radio" name="mode" value="paste"><span><b data-t="haveYes"></b><span data-t="haveYesText"></span></span></label>
     </div>
 
-    <div id="pane-gen" role="tabpanel" aria-labelledby="tab-gen">
-      <div class="grid">
-        <div>
-          <div class="field">
-            <label for="f-lang" data-t="fLang"></label>
-            <select id="f-lang"><option value="he">עברית</option><option value="en">English</option></select>
-          </div>
-          <div class="field"><label for="f-name" data-t="fName"></label><input type="text" id="f-name"></div>
-          <div class="field"><label for="f-contact" data-t="fContact"></label><input type="text" id="f-contact"></div>
-          <div class="grid">
-            <div class="field"><label for="f-phone" data-t="fPhone"></label><input type="tel" id="f-phone" dir="ltr"></div>
-            <div class="field"><label for="f-email" data-t="fEmail"></label><input type="email" id="f-email" dir="ltr"></div>
-          </div>
-          <div class="field">
-            <label for="f-standard" data-t="fStandard"></label>
-            <select id="f-standard">
-              <option value="il">IS 5568 / WCAG 2.0 AA (Israel)</option>
-              <option value="wcag21">WCAG 2.1 AA</option>
-              <option value="wcag22">WCAG 2.2 AA</option>
-            </select>
-          </div>
-          <div class="field checks">
-            <label style="font-weight:600" data-t="fDone"></label>
-            <div id="done-list"></div>
-          </div>
-          <div class="field">
-            <label for="f-limits" data-t="fLimits"></label>
-            <textarea id="f-limits"></textarea>
-            <p class="hint" data-t="fLimitsHint"></p>
-          </div>
-          <div class="field">
-            <label for="f-physical" data-t="fPhysical"></label>
-            <select id="f-physical"><option value="no" data-t="physNo"></option><option value="yes" data-t="physYes"></option></select>
-          </div>
-          <div class="field" id="phys-wrap" hidden>
-            <label for="f-phys-text" data-t="fPhysText"></label>
-            <textarea id="f-phys-text"></textarea>
-          </div>
-          <div class="field"><label for="f-date" data-t="fDate"></label><input type="date" id="f-date"></div>
+    <div id="pane-gen">
+      <div class="q">
+        <label for="f-name" data-t="qName"></label>
+        <input type="text" id="f-name">
+      </div>
+      <div class="q">
+        <label for="f-contact" data-t="qContact"></label>
+        <p class="hint" data-t="qContactHint"></p>
+        <input type="text" id="f-contact" data-ph="phContact">
+      </div>
+      <div class="q">
+        <span class="label" data-t="qReach"></span>
+        <p class="hint" data-t="qReachHint"></p>
+        <div class="two">
+          <div><label for="f-phone" class="hint" style="font-weight:600;color:var(--text)" data-t="fPhone"></label><input type="tel" id="f-phone" dir="ltr" placeholder="050-0000000"></div>
+          <div><label for="f-email" class="hint" style="font-weight:600;color:var(--text)" data-t="fEmail"></label><input type="email" id="f-email" dir="ltr"></div>
         </div>
-        <div>
-          <p style="font-weight:600;margin-bottom:6px" data-t="preview"></p>
-          <div class="preview" id="preview" aria-live="polite"></div>
-        </div>
+      </div>
+      <div class="q">
+        <span class="label" data-t="qDone"></span>
+        <p class="hint" data-t="qDoneHint"></p>
+        <div id="done-list"></div>
+      </div>
+      <div class="q">
+        <label for="f-limits" data-t="qLimits"></label>
+        <p class="hint" data-t="qLimitsHint"></p>
+        <textarea id="f-limits" data-ph="phLimits"></textarea>
+      </div>
+      <div class="q" role="radiogroup" aria-labelledby="q-phys">
+        <span class="label" id="q-phys" data-t="qPhysical"></span>
+        <label class="choice"><input type="radio" name="physical" value="no" checked><span><b data-t="physNo"></b><span data-t="physNoText"></span></span></label>
+        <label class="choice"><input type="radio" name="physical" value="yes"><span><b data-t="physYes"></b><span data-t="physYesText"></span></span></label>
+      </div>
+      <div class="q" id="phys-wrap" hidden>
+        <label for="f-phys-text" data-t="qPhysText"></label>
+        <p class="hint" data-t="qPhysHint"></p>
+        <textarea id="f-phys-text"></textarea>
       </div>
     </div>
 
-    <div id="pane-paste" role="tabpanel" aria-labelledby="tab-paste" hidden>
-      <div class="field">
+    <div id="pane-paste" hidden>
+      <div class="q">
         <label for="f-paste" data-t="pasteLabel"></label>
-        <textarea id="f-paste" style="min-height:280px"></textarea>
         <p class="hint" data-t="pasteHint"></p>
+        <textarea id="f-paste" style="min-height:280px"></textarea>
       </div>
     </div>
 
-    <div class="field" style="max-width:420px">
-      <label for="f-title" data-t="fTitle"></label>
-      <input type="text" id="f-title">
+    <details>
+      <summary data-t="advanced"></summary>
+      <div class="q">
+        <label for="f-lang" data-t="fLang"></label>
+        <select id="f-lang"><option value="he">עברית</option><option value="en">English</option></select>
+      </div>
+      <div class="q">
+        <label for="f-standard" data-t="fStandard"></label>
+        <p class="hint" data-t="fStandardHint"></p>
+        <select id="f-standard">
+          <option value="il" data-t="stdIl"></option>
+          <option value="wcag21">WCAG 2.1 AA</option>
+          <option value="wcag22">WCAG 2.2 AA</option>
+        </select>
+      </div>
+      <div class="two">
+        <div class="q"><label for="f-title" data-t="fTitle"></label><input type="text" id="f-title"></div>
+        <div class="q"><label for="f-date" data-t="fDate"></label><input type="date" id="f-date"></div>
+      </div>
+    </details>
+
+    <h3 data-t="previewTitle"></h3>
+    <p class="hint" data-t="previewHint"></p>
+    <div class="preview" id="preview"></div>
+
+    <div class="note" data-t="legalNote" style="margin-top:16px"></div>
+
+    <div class="success" id="pub-ok" hidden>
+      <span data-t="published"></span>
+      <a class="btn" id="view-page" target="_blank" rel="noopener" style="margin-inline-start:10px" data-t="viewPage"></a>
     </div>
-    <div class="actions">
-      <button type="button" class="primary" id="publish" data-t="publish"></button>
-      <button type="button" id="copy" data-t="copy"></button>
-      <a class="btn" id="view-page" target="_blank" rel="noopener" hidden data-t="viewPage"></a>
+
+    <div class="nav">
+      <button type="button" data-next="2" data-t="back"></button>
+      <span style="display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" id="copy" data-t="copy"></button>
+        <button type="button" class="primary big" id="publish" data-t="publish"></button>
+      </span>
     </div>
   </section>
 
-  <p class="muted" style="text-align:center" data-t="footer"></p>
+  <!-- STEP 4: done -->
+  <section class="card step" data-step="4" aria-labelledby="s4-h" hidden>
+    <h2 id="s4-h" data-t="s4Title"></h2>
+    <p data-t="s4Intro"></p>
+    <ul class="summary-list">
+      <li><span><span class="done-mark">✓</span> <span data-t="sum1"></span></span><button type="button" class="link" data-embed="accessibility" data-t="change"></button></li>
+      <li><span><span class="done-mark">✓</span> <span data-t="sum2"></span></span><button type="button" class="link" data-embed="cookies" data-t="change"></button></li>
+      <li><span><span class="done-mark" id="sum3-mark">✓</span> <span data-t="sum3"></span></span><button type="button" class="link" data-next="3" data-t="change"></button></li>
+    </ul>
+    <div class="why" data-t="s4Tip"></div>
+  </section>
+
+  <p class="muted" style="text-align:center;font-size:14px" data-t="footer"></p>
 </main>
 
 <script>
@@ -163,65 +245,143 @@
   var HANDLE = 'accessibility-statement';
 
   var UI = {
-    en: {
-      title: 'Nagish – Accessibility toolbar, statement & cookie banner',
-      subtitle: 'Free. Set up in three steps.',
-      setupTitle: 'Setup',
-      step1: '1. Turn on the accessibility toolbar',
-      step1Text: 'Opens the theme editor with the toolbar ready to switch on. There you choose the position, color, size and language, then click Save.',
-      step2: '2. Cookie banner (optional)',
-      step2Text: 'A banner that lets visitors accept or refuse cookies and passes the choice to Shopify. If you already use another cookie banner, skip this.',
-      step3: '3. Accessibility statement',
-      step3Text: 'Fill in the form below (or paste your own statement) and click "Publish to store". The toolbar links to it automatically.',
-      openEditor: 'Open theme editor',
-      noStatement: 'No statement page yet',
-      hasStatement: 'Statement page is live',
-      legalNote: 'Important: a toolbar alone does not make a website accessible or legally compliant. It helps visitors adjust the display, but the site itself (theme, images, forms) must also be accessible. Review the statement and make sure everything in it is true for your store.',
-      statementTitle: 'Accessibility statement',
-      tabGenerate: 'Create with the generator',
-      tabPaste: 'Paste my own statement',
-      fLang: 'Statement language', fName: 'Business name', fContact: 'Accessibility coordinator name',
-      fPhone: 'Phone', fEmail: 'Email', fStandard: 'Standard',
-      fDone: 'What was done to make the site accessible (tick only what is true)',
-      fLimits: 'Known limitations', fLimitsHint: 'One per line. Being honest here protects you.',
-      fPhysical: 'Do you have a physical store open to the public?', physNo: 'No – online only', physYes: 'Yes',
-      fPhysText: 'Physical accessibility arrangements (address, parking, entrance, restrooms…)',
-      fDate: 'Last updated', preview: 'Preview',
-      pasteLabel: 'Paste your statement here', pasteHint: 'Plain text or HTML. Empty lines become new paragraphs.',
-      fTitle: 'Page title', publish: 'Publish to store', copy: 'Copy text', copied: 'Copied',
-      viewPage: 'View page', saving: 'Publishing…', saved: 'Statement published', error: 'Something went wrong: ',
-      emptyPaste: 'Paste the statement text first',
-      footer: 'Nagish is free. Visitor settings stay in their own browser – no personal data is collected.'
-    },
     he: {
-      title: 'נגיש – תפריט נגישות, הצהרת נגישות ובאנר עוגיות',
-      subtitle: 'חינם. מתקינים בשלושה צעדים.',
-      setupTitle: 'הגדרה',
-      step1: '1. הפעלת תפריט הנגישות',
-      step1Text: 'פותח את עורך העיצוב עם התפריט מוכן להפעלה. שם בוחרים מיקום, צבע, גודל ושפה, ולוחצים "שמירה".',
-      step2: '2. באנר עוגיות (לא חובה)',
-      step2Text: 'באנר שמאפשר לגולשים לאשר או לסרב לעוגיות ומעביר את הבחירה ל-Shopify. אם יש לכם כבר באנר עוגיות אחר – דלגו.',
-      step3: '3. הצהרת נגישות',
-      step3Text: 'ממלאים את הטופס למטה (או מדביקים הצהרה קיימת) ולוחצים "פרסום בחנות". התפריט יקשר אליה אוטומטית.',
+      title: 'נגיש – נגישות לאתר שלכם',
+      subtitle: 'חינם. לוקח בערך 5 דקות. נעבור על זה יחד, צעד אחרי צעד.',
+      p1: 'כפתור נגישות', p2: 'באנר עוגיות', p3: 'הצהרת נגישות', p4: 'סיום',
+      stepOf1: 'שלב 1 מתוך 3', stepOf2: 'שלב 2 מתוך 3', stepOf3: 'שלב 3 מתוך 3',
+      whatToDo: 'מה עושים?',
+      s1Title: 'מדליקים את כפתור הנגישות באתר',
+      s1Intro: 'זה הכפתור העגול שהגולשים רואים באתר. לחיצה עליו פותחת תפריט שבו אפשר להגדיל טקסט, לשנות צבעים ועוד. כרגע הכפתור כבוי, ואנחנו נדליק אותו.',
+      s1a: 'לוחצים על הכפתור הכחול למטה. ייפתח "עורך העיצוב" של החנות (לפעמים בלשונית חדשה).',
+      s1b: 'בצד יופיע "נגיש – תפריט נגישות" עם מתג. מוודאים שהמתג דולק (צבוע).',
+      s1c: 'אפשר לבחור איפה הכפתור יופיע במסך, באיזה צבע ובאיזה גודל. לא בטוחים? אפשר להשאיר כמו שזה.',
+      s1d: 'לוחצים על הכפתור "שמירה" (Save) בפינה העליונה.',
+      s1e: 'חוזרים ללשונית הזאת ולוחצים "עשיתי את זה".',
       openEditor: 'פתיחת עורך העיצוב',
-      noStatement: 'עדיין אין עמוד הצהרה',
-      hasStatement: 'עמוד ההצהרה פעיל',
-      legalNote: 'חשוב: תפריט נגישות לבדו לא הופך אתר לנגיש ולא מספיק לעמידה בחוק. הוא עוזר לגולשים להתאים את התצוגה, אבל גם האתר עצמו (התבנית, התמונות, הטפסים) צריך להיות נגיש. עברו על ההצהרה וודאו שכל מה שכתוב בה נכון לגבי החנות שלכם.',
-      statementTitle: 'הצהרת נגישות',
-      tabGenerate: 'יצירה עם המחולל',
-      tabPaste: 'הדבקת הצהרה קיימת',
-      fLang: 'שפת ההצהרה', fName: 'שם העסק', fContact: 'שם רכז/ת הנגישות',
-      fPhone: 'טלפון', fEmail: 'אימייל', fStandard: 'תקן',
-      fDone: 'מה נעשה כדי להנגיש את האתר (סמנו רק מה שנכון)',
-      fLimits: 'מגבלות ידועות', fLimitsHint: 'כל מגבלה בשורה נפרדת. כנות כאן מגינה עליכם.',
-      fPhysical: 'יש לכם חנות פיזית פתוחה לקהל?', physNo: 'לא – אונליין בלבד', physYes: 'כן',
-      fPhysText: 'הסדרי נגישות פיזיים (כתובת, חניה, כניסה, שירותים…)',
-      fDate: 'תאריך עדכון', preview: 'תצוגה מקדימה',
-      pasteLabel: 'הדביקו כאן את ההצהרה', pasteHint: 'טקסט רגיל או HTML. שורה ריקה = פסקה חדשה.',
-      fTitle: 'כותרת העמוד', publish: 'פרסום בחנות', copy: 'העתקת הטקסט', copied: 'הועתק',
-      viewPage: 'צפייה בעמוד', saving: 'מפרסם…', saved: 'ההצהרה פורסמה', error: 'משהו השתבש: ',
-      emptyPaste: 'קודם הדביקו את טקסט ההצהרה',
-      footer: 'נגיש חינמית. הגדרות הגולשים נשמרות רק בדפדפן שלהם – לא נאסף מידע אישי.'
+      s1Done: 'עשיתי את זה, להמשך ←',
+      s2Title: 'באנר עוגיות (לא חובה)',
+      s2Intro: 'זו ההודעה שמופיעה בתחתית האתר ושואלת את הגולש אם הוא מסכים לעוגיות (Cookies).',
+      s2Why: 'למה זה טוב? הרבה אתרים מחויבים לשאול את הגולשים לפני שעוקבים אחריהם (למשל לפרסום בפייסבוק או בגוגל). אם כבר יש לכם באנר עוגיות מאפליקציה אחרת, דלגו על השלב הזה, כדי שלא יופיעו שניים.',
+      s2b: 'מדליקים את המתג "נגיש – באנר עוגיות". אפשר לבחור צבע ומיקום.',
+      s2Done: 'עשיתי את זה, להמשך ←',
+      skip: 'דילוג על השלב',
+      back: '→ חזרה',
+      s3Title: 'הצהרת נגישות',
+      s3Intro: 'הצהרת נגישות היא עמוד באתר שמסביר לגולשים מה עשיתם כדי שהאתר יהיה נוח לאנשים עם מוגבלות, ואיך לפנות אליכם אם משהו לא עובד. בישראל החוק מחייב אתרים עסקיים שיהיה להם עמוד כזה. ענו על כמה שאלות פשוטות, ואנחנו נכתוב את ההצהרה בשבילכם.',
+      qHave: 'יש לכם כבר הצהרת נגישות כתובה?',
+      haveNo: 'לא, תכתבו לי', haveNoText: 'עונים על כמה שאלות, וההצהרה נכתבת לבד.',
+      haveYes: 'כן, יש לי', haveYesText: 'מדביקים את הטקסט, ואנחנו מעלים אותו לאתר.',
+      qName: 'איך קוראים לעסק?',
+      qContact: 'מי אחראי על הנגישות אצלכם?',
+      qContactHint: 'זה יכול להיות אתם. צריך לכתוב שם של אדם שאפשר לפנות אליו.',
+      phContact: 'למשל: דנה כהן',
+      qReach: 'איך אפשר ליצור איתו קשר?',
+      qReachHint: 'מספיק טלפון או אימייל, אבל עדיף את שניהם.',
+      fPhone: 'טלפון', fEmail: 'אימייל',
+      qDone: 'מה כבר עשיתם באתר?',
+      qDoneHint: 'סמנו רק מה שאתם בטוחים בו. לא יודעים? אל תסמנו. עדיף לכתוב פחות, אבל רק דברים נכונים.',
+      qLimits: 'יש משהו באתר שאתם יודעים שעוד לא נגיש?',
+      qLimitsHint: 'לא חובה. כל דבר בשורה נפרדת. כנות כאן דווקא מגינה עליכם.',
+      phLimits: 'למשל: לחלק מתמונות המוצרים עוד אין תיאור\nלמשל: הסרטונים באתר בלי כתוביות',
+      qPhysical: 'יש לכם חנות פיזית שלקוחות מגיעים אליה?',
+      physNo: 'לא, רק אונליין', physNoText: 'כל המכירות דרך האתר.',
+      physYes: 'כן', physYesText: 'יש מקום שלקוחות מגיעים אליו.',
+      qPhysText: 'ספרו על הנגישות במקום',
+      qPhysHint: 'למשל: כתובת, האם יש חניית נכים, האם הכניסה בלי מדרגות, האם יש שירותי נכים.',
+      pasteLabel: 'הדביקו כאן את ההצהרה שלכם',
+      pasteHint: 'מעתיקים את הטקסט ממסמך או מאתר אחר, ומדביקים כאן (Ctrl+V או Cmd+V).',
+      advanced: 'הגדרות נוספות (לא חובה)',
+      fLang: 'באיזו שפה לכתוב את ההצהרה?', fStandard: 'לפי איזה תקן?',
+      fStandardHint: 'בישראל משאירים על התקן הישראלי.',
+      stdIl: 'התקן הישראלי (ת"י 5568)',
+      fTitle: 'כותרת העמוד', fDate: 'תאריך עדכון',
+      previewTitle: 'ככה ההצהרה תיראה באתר',
+      previewHint: 'מתעדכן לבד בזמן שאתם עונים על השאלות.',
+      legalNote: 'שימו לב: כפתור נגישות לבד לא הופך את האתר לנגיש לגמרי, וגם לא מבטיח עמידה בחוק. הוא עוזר לגולשים, אבל חשוב גם שהאתר עצמו יהיה בנוי נכון. לפני שמפרסמים, קראו את ההצהרה וודאו שכל מה שכתוב בה נכון.',
+      publish: 'פרסום ההצהרה באתר',
+      copy: 'העתקת הטקסט',
+      copied: 'הטקסט הועתק',
+      saving: 'מפרסם…',
+      published: '✓ ההצהרה פורסמה באתר! כפתור הנגישות כבר מקשר אליה.',
+      viewPage: 'לצפייה בעמוד',
+      emptyPaste: 'קודם צריך להדביק את טקסט ההצהרה',
+      error: 'משהו השתבש: ',
+      s4Title: '🎉 סיימתם!',
+      s4Intro: 'האתר שלכם מוכן. ככה זה נראה עכשיו:',
+      sum1: 'כפתור נגישות באתר', sum2: 'באנר עוגיות', sum3: 'הצהרת נגישות',
+      change: 'שינוי',
+      s4Tip: 'טיפ: היכנסו לאתר מהטלפון ומהמחשב, ובדקו שאתם רואים את הכפתור העגול. אם לא רואים אותו, חזרו לשלב 1 וודאו שלחצתם "שמירה" בעורך העיצוב.',
+      footer: 'נגיש חינמית לגמרי. ההגדרות של הגולשים נשמרות רק אצלם בדפדפן, ולא נאסף שום מידע אישי.'
+    },
+    en: {
+      title: 'Nagish – accessibility for your store',
+      subtitle: 'Free. Takes about 5 minutes. We will go step by step.',
+      p1: 'Accessibility button', p2: 'Cookie banner', p3: 'Accessibility statement', p4: 'Done',
+      stepOf1: 'Step 1 of 3', stepOf2: 'Step 2 of 3', stepOf3: 'Step 3 of 3',
+      whatToDo: 'What to do',
+      s1Title: 'Turn on the accessibility button',
+      s1Intro: 'This is the round button visitors see on your store. Clicking it opens a menu where they can enlarge text, change colors and more. It is off right now. Let\'s turn it on.',
+      s1a: 'Click the blue button below. Your theme editor opens (sometimes in a new tab).',
+      s1b: 'On the side you will see "Nagish – Accessibility toolbar" with a switch. Make sure the switch is on.',
+      s1c: 'You can choose where the button appears, its color and its size. Not sure? Leave it as it is.',
+      s1d: 'Click "Save" at the top corner.',
+      s1e: 'Come back to this tab and click "I did it".',
+      openEditor: 'Open theme editor',
+      s1Done: 'I did it, continue →',
+      s2Title: 'Cookie banner (optional)',
+      s2Intro: 'This is the message at the bottom of the store that asks visitors whether they agree to cookies.',
+      s2Why: 'Why? Many stores must ask visitors before tracking them (for example for Facebook or Google ads). If you already have a cookie banner from another app, skip this step so you don\'t show two.',
+      s2b: 'Turn on the switch "Nagish – Cookie banner". You can choose a color and position.',
+      s2Done: 'I did it, continue →',
+      skip: 'Skip this step',
+      back: '← Back',
+      s3Title: 'Accessibility statement',
+      s3Intro: 'An accessibility statement is a page that tells visitors what you did to make your store easier for people with disabilities, and how to contact you if something does not work. Answer a few simple questions and we will write it for you.',
+      qHave: 'Do you already have a written accessibility statement?',
+      haveNo: 'No, write it for me', haveNoText: 'Answer a few questions and the statement writes itself.',
+      haveYes: 'Yes, I have one', haveYesText: 'Paste the text and we will put it on your store.',
+      qName: 'What is your business called?',
+      qContact: 'Who is in charge of accessibility?',
+      qContactHint: 'It can be you. Write the name of a person visitors can contact.',
+      phContact: 'For example: Dana Cohen',
+      qReach: 'How can people reach them?',
+      qReachHint: 'Phone or email is enough, both is better.',
+      fPhone: 'Phone', fEmail: 'Email',
+      qDone: 'What have you already done on your store?',
+      qDoneHint: 'Tick only what you are sure about. Not sure? Leave it unticked. It is better to say less, as long as it is true.',
+      qLimits: 'Is there anything you know is not accessible yet?',
+      qLimitsHint: 'Optional. One item per line. Being honest here protects you.',
+      phLimits: 'For example: some product images have no description yet\nFor example: videos have no captions',
+      qPhysical: 'Do you have a physical store customers visit?',
+      physNo: 'No, online only', physNoText: 'All sales happen on the website.',
+      physYes: 'Yes', physYesText: 'Customers visit a physical place.',
+      qPhysText: 'Tell us about accessibility at your location',
+      qPhysHint: 'For example: address, accessible parking, step-free entrance, accessible restroom.',
+      pasteLabel: 'Paste your statement here',
+      pasteHint: 'Copy the text from a document or another website and paste it here (Ctrl+V or Cmd+V).',
+      advanced: 'More settings (optional)',
+      fLang: 'Statement language', fStandard: 'Which standard?',
+      fStandardHint: 'Most stores outside Israel use WCAG 2.1 AA.',
+      stdIl: 'Israeli standard (IS 5568)',
+      fTitle: 'Page title', fDate: 'Last updated',
+      previewTitle: 'This is how the statement will look',
+      previewHint: 'Updates by itself as you answer.',
+      legalNote: 'Please note: an accessibility button alone does not make a website fully accessible or legally compliant. It helps visitors, but the store itself must also be built correctly. Before publishing, read the statement and make sure everything in it is true.',
+      publish: 'Publish statement to my store',
+      copy: 'Copy text',
+      copied: 'Text copied',
+      saving: 'Publishing…',
+      published: '✓ The statement is live on your store! The accessibility button already links to it.',
+      viewPage: 'View page',
+      emptyPaste: 'Please paste the statement text first',
+      error: 'Something went wrong: ',
+      s4Title: '🎉 All done!',
+      s4Intro: 'Your store is ready. Here is what you have now:',
+      sum1: 'Accessibility button', sum2: 'Cookie banner', sum3: 'Accessibility statement',
+      change: 'Change',
+      s4Tip: 'Tip: open your store on your phone and computer and check that you see the round button. If not, go back to step 1 and make sure you clicked "Save" in the theme editor.',
+      footer: 'Nagish is completely free. Visitor settings stay only in their own browser. No personal data is collected.'
     }
   };
 
@@ -236,15 +396,16 @@
     responsive: { he: 'האתר מותאם לצפייה בטלפון, בטאבלט ובמחשב.', en: 'The site works on phones, tablets and computers.' },
     toolbar: { he: 'באתר יש תפריט נגישות שמאפשר להגדיל טקסט, לשנות ניגודיות וצבעים, להדגיש קישורים וכותרות, לעצור אנימציות ועוד.', en: 'The site has an accessibility toolbar for larger text, contrast and color options, highlighting links and headings, stopping animations and more.' }
   };
+  /* plain-language checklist: [title, explanation] */
   var DONE_UI = {
-    keyboard: { en: 'Keyboard navigation', he: 'ניווט במקלדת' },
-    skip: { en: '"Skip to content" link', he: 'קישור "דילוג לתוכן"' },
-    labels: { en: 'Names for buttons and icons', he: 'שמות לכפתורים ואייקונים' },
-    alt: { en: 'Alt text on images', he: 'טקסט חלופי לתמונות' },
-    contrast: { en: 'Color contrast checked', he: 'ניגודיות צבעים נבדקה' },
-    lang: { en: 'Correct language and direction', he: 'שפה וכיוון כתיבה נכונים' },
-    responsive: { en: 'Works on mobile', he: 'מותאם לטלפון' },
-    toolbar: { en: 'Accessibility toolbar (Nagish)', he: 'תפריט נגישות (נגיש)' }
+    toolbar: { he: ['יש באתר כפתור נגישות', 'הכפתור של נגיש משלב 1. אם הדלקתם אותו – סמנו.'], en: ['There is an accessibility button', 'The Nagish button from step 1. If you turned it on, tick this.'] },
+    responsive: { he: ['האתר נראה טוב גם בטלפון', 'אפשר לקנות באתר בנוחות גם מהנייד.'], en: ['The store looks good on phones', 'People can shop comfortably from a phone.'] },
+    keyboard: { he: ['אפשר להשתמש באתר רק עם המקלדת', 'בלי עכבר: מקש Tab עובר בין הכפתורים, ו-Enter לוחץ.'], en: ['The store works with a keyboard only', 'No mouse: Tab moves between buttons and Enter clicks.'] },
+    skip: { he: ['יש קישור "דילוג לתוכן"', 'קישור נסתר בראש העמוד שמופיע כשלוחצים Tab, ומדלג על התפריט.'], en: ['There is a "skip to content" link', 'A hidden link at the top that appears when pressing Tab.'] },
+    labels: { he: ['לכפתורים ולאייקונים יש שמות', 'תוכנה שמקריאה את המסך לעיוורים יודעת להגיד מה כל כפתור עושה.'], en: ['Buttons and icons have names', 'Screen readers for blind visitors can say what each button does.'] },
+    alt: { he: ['לתמונות יש תיאור', 'לכל תמונת מוצר יש טקסט שמתאר אותה (ב-Shopify: "טקסט חלופי").'], en: ['Images have descriptions', 'Each product image has text describing it (in Shopify: "alt text").'] },
+    contrast: { he: ['בדקנו שהטקסט קריא על הרקע', 'הטקסט לא בהיר מדי ולא קטן מדי, כך שקל לקרוא אותו.'], en: ['Text is easy to read on its background', 'Text is not too light or too small.'] },
+    lang: { he: ['האתר מוגדר בשפה ובכיוון הנכונים', 'למשל: בעברית ומימין לשמאל.'], en: ['The store is set to the right language', 'For example: English, left to right.'] }
   };
   var STD = {
     il: { he: 'האתר הותאם לדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג–2013, ולתקן הישראלי ת"י 5568, המבוסס על הנחיות WCAG 2.0 ברמה AA.', en: 'The site was adapted to the Israeli Equal Rights for Persons with Disabilities (Accessibility Adjustments to Service) Regulations, 2013, and to Israeli Standard IS 5568, based on WCAG 2.0 level AA.' },
@@ -254,8 +415,8 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var params = new URLSearchParams(location.search);
-  var uiLang = /^he/i.test(params.get('locale') || '') ? 'he' : 'en';
-  var state = { installationId: null, pageId: null, pageUrl: null, mode: 'gen' };
+  var uiLang = /^en/i.test(params.get('locale') || '') ? 'en' : 'he';
+  var state = { installationId: null, pageId: null, pageUrl: null, mode: 'gen', step: 1, progress: {} };
 
   function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
@@ -266,6 +427,8 @@
     return json.data;
   }
   function toast(msg, isError) { try { shopify.toast.show(msg, { isError: !!isError }); } catch (e) { alert(msg); } }
+  function radio(name) { var r = document.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : ''; }
+  function setRadio(name, v) { var r = document.querySelector('input[name="' + name + '"][value="' + v + '"]'); if (r) r.checked = true; }
 
   function renderUI() {
     var T = UI[uiLang];
@@ -273,25 +436,36 @@
     document.documentElement.dir = uiLang === 'he' ? 'rtl' : 'ltr';
     $('ui-lang').value = uiLang;
     document.querySelectorAll('[data-t]').forEach(function (n) { n.textContent = T[n.getAttribute('data-t')]; });
+    document.querySelectorAll('[data-ph]').forEach(function (n) { n.placeholder = T[n.getAttribute('data-ph')]; });
     var list = $('done-list'), checked = {};
     list.querySelectorAll('input').forEach(function (i) { checked[i.value] = i.checked; });
     var first = !list.children.length;
     list.innerHTML = '';
-    Object.keys(DONE).forEach(function (k) {
-      var lab = document.createElement('label');
+    Object.keys(DONE_UI).forEach(function (k) {
       var on = first ? (k === 'toolbar' || k === 'responsive') : checked[k];
-      lab.innerHTML = '<input type="checkbox" value="' + k + '"' + (on ? ' checked' : '') + '> <span>' + esc(DONE_UI[k][uiLang]) + '</span>';
+      var lab = document.createElement('label');
+      lab.className = 'choice';
+      lab.innerHTML = '<input type="checkbox" value="' + k + '"' + (on ? ' checked' : '') + '><span><b>' + esc(DONE_UI[k][uiLang][0]) + '</b><span>' + esc(DONE_UI[k][uiLang][1]) + '</span></span>';
       list.appendChild(lab);
     });
-    updateStatus();
+    showStep(state.step, true);
     renderPreview();
   }
 
-  function updateStatus() {
-    var T = UI[uiLang], s = $('statement-status');
-    s.textContent = state.pageUrl ? T.hasStatement : T.noStatement;
-    s.className = 'status' + (state.pageUrl ? ' ok' : '');
-    if (state.pageUrl) { $('view-page').href = state.pageUrl; $('view-page').hidden = false; }
+  function showStep(n, quiet) {
+    state.step = n;
+    document.querySelectorAll('.step').forEach(function (s) { s.hidden = +s.getAttribute('data-step') !== n; });
+    document.querySelectorAll('#progress li').forEach(function (li) {
+      var p = +li.getAttribute('data-p');
+      li.className = p === n ? 'on' : (p < n ? 'done' : '');
+      if (p === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+    });
+    $('sum3-mark').textContent = state.pageUrl ? '✓' : '–';
+    if (!quiet) {
+      window.scrollTo(0, 0);
+      var h = document.querySelector('.step[data-step="' + n + '"] h2');
+      if (h) { h.setAttribute('tabindex', '-1'); h.focus(); }
+    }
   }
 
   function formData() {
@@ -299,15 +473,16 @@
       lang: $('f-lang').value, name: $('f-name').value.trim(), contact: $('f-contact').value.trim(),
       phone: $('f-phone').value.trim(), email: $('f-email').value.trim(), standard: $('f-standard').value,
       done: Array.prototype.map.call($('done-list').querySelectorAll('input:checked'), function (i) { return i.value; }),
-      limits: $('f-limits').value, physical: $('f-physical').value, physText: $('f-phys-text').value,
-      date: $('f-date').value, paste: $('f-paste').value, title: $('f-title').value, mode: state.mode
+      limits: $('f-limits').value, physical: radio('physical'), physText: $('f-phys-text').value,
+      date: $('f-date').value, paste: $('f-paste').value, title: $('f-title').value, mode: state.mode, step: state.step
     };
   }
   function fillForm(d) {
-    ['lang', 'name', 'contact', 'phone', 'email', 'standard', 'limits', 'physical', 'date', 'title', 'paste'].forEach(function (k) {
+    ['lang', 'name', 'contact', 'phone', 'email', 'standard', 'limits', 'date', 'title', 'paste'].forEach(function (k) {
       var el = $('f-' + k); if (el && d[k] != null) el.value = d[k];
     });
     if (d.physText != null) $('f-phys-text').value = d.physText;
+    if (d.physical) setRadio('physical', d.physical);
     if (d.done) $('done-list').querySelectorAll('input').forEach(function (i) { i.checked = d.done.indexOf(i.value) > -1; });
     if (d.mode) setMode(d.mode);
   }
@@ -359,57 +534,78 @@
   }
 
   function currentHtml() { return state.mode === 'paste' ? pastedHtml($('f-paste').value) : buildStatement(formData()); }
-  function renderPreview() { $('preview').innerHTML = buildStatement(formData()); }
+  function renderPreview() {
+    $('preview').innerHTML = state.mode === 'paste'
+      ? (pastedHtml($('f-paste').value) || '<p class="muted">…</p>')
+      : buildStatement(formData());
+    $('phys-wrap').hidden = state.mode !== 'gen' || radio('physical') !== 'yes';
+  }
 
   function setMode(m) {
     state.mode = m;
-    $('tab-gen').setAttribute('aria-selected', m === 'gen'); $('tab-paste').setAttribute('aria-selected', m === 'paste');
+    setRadio('mode', m);
     $('pane-gen').hidden = m !== 'gen'; $('pane-paste').hidden = m !== 'paste';
+    renderPreview();
+  }
+
+  function saveProgress() {
+    if (!state.installationId) return;
+    gql('mutation($m: [MetafieldsSetInput!]!) { metafieldsSet(metafields: $m) { userErrors { message } } }', { m: [
+      { ownerId: state.installationId, namespace: 'nagish', key: 'statement_form', type: 'json', value: JSON.stringify(formData()) }
+    ] }).catch(function () {});
   }
 
   async function load() {
-    var d = await gql('{ shop { name email primaryDomain { url } } currentAppInstallation { id metafield(namespace: "nagish", key: "statement_form") { value } } pages(first: 1, query: "handle:' + HANDLE + '") { nodes { id handle title } } }');
+    var d = await gql('{ shop { name email primaryDomain { url } } shopLocales { locale primary } currentAppInstallation { id metafield(namespace: "nagish", key: "statement_form") { value } } pages(first: 1, query: "handle:' + HANDLE + '") { nodes { id handle title } } }');
     state.installationId = d.currentAppInstallation.id;
     state.shopUrl = d.shop.primaryDomain.url;
+    var primary = (d.shopLocales.filter(function (l) { return l.primary; })[0] || {}).locale || '';
+    var storeLang = /^he/i.test(primary) ? 'he' : 'en';
     var saved = null;
     try { saved = JSON.parse(d.currentAppInstallation.metafield && d.currentAppInstallation.metafield.value); } catch (e) {}
+    if (!params.get('ui')) { uiLang = /^he/i.test(params.get('locale') || '') ? 'he' : storeLang; renderUI(); }
     if (saved) fillForm(saved);
     else {
       $('f-name').value = d.shop.name; $('f-email').value = d.shop.email || '';
-      $('f-lang').value = uiLang; $('f-title').value = uiLang === 'he' ? 'הצהרת נגישות' : 'Accessibility statement';
+      $('f-lang').value = storeLang;
+      $('f-standard').value = storeLang === 'he' ? 'il' : 'wcag21';
+      $('f-title').value = storeLang === 'he' ? 'הצהרת נגישות' : 'Accessibility statement';
     }
     var page = d.pages.nodes[0];
-    if (page) { state.pageId = page.id; state.pageUrl = state.shopUrl + '/pages/' + page.handle; }
-    updateStatus(); renderPreview();
+    if (page) {
+      state.pageId = page.id; state.pageUrl = state.shopUrl + '/pages/' + page.handle;
+      $('view-page').href = state.pageUrl; $('pub-ok').hidden = false;
+    }
+    showStep(saved && saved.step ? saved.step : (page ? 4 : 1), true);
+    renderPreview();
   }
 
   async function publish() {
     var T = UI[uiLang], btn = $('publish');
-    if (state.mode === 'paste' && !$('f-paste').value.trim()) { toast(T.emptyPaste, true); return; }
+    if (state.mode === 'paste' && !$('f-paste').value.trim()) { toast(T.emptyPaste, true); $('f-paste').focus(); return; }
     btn.disabled = true; btn.textContent = T.saving;
     try {
       var title = $('f-title').value.trim() || ($('f-lang').value === 'he' ? 'הצהרת נגישות' : 'Accessibility statement');
       var page = { title: title, body: currentHtml(), isPublished: true };
-      var r, errs;
+      var r;
       if (state.pageId) {
-        r = await gql('mutation($id: ID!, $page: PageUpdateInput!) { pageUpdate(id: $id, page: $page) { page { id handle } userErrors { message } } }', { id: state.pageId, page: page });
-        r = r.pageUpdate;
+        r = (await gql('mutation($id: ID!, $page: PageUpdateInput!) { pageUpdate(id: $id, page: $page) { page { id handle } userErrors { message } } }', { id: state.pageId, page: page })).pageUpdate;
       } else {
         page.handle = HANDLE;
-        r = await gql('mutation($page: PageCreateInput!) { pageCreate(page: $page) { page { id handle } userErrors { message } } }', { page: page });
-        r = r.pageCreate;
+        r = (await gql('mutation($page: PageCreateInput!) { pageCreate(page: $page) { page { id handle } userErrors { message } } }', { page: page })).pageCreate;
       }
-      errs = r.userErrors || [];
-      if (errs.length) throw new Error(errs.map(function (e) { return e.message; }).join('; '));
+      if (r.userErrors && r.userErrors.length) throw new Error(r.userErrors.map(function (e) { return e.message; }).join('; '));
       state.pageId = r.page.id;
       state.pageUrl = state.shopUrl + '/pages/' + r.page.handle;
+      state.step = 4;
       var m = await gql('mutation($m: [MetafieldsSetInput!]!) { metafieldsSet(metafields: $m) { userErrors { message } } }', { m: [
         { ownerId: state.installationId, namespace: 'nagish', key: 'statement_url', type: 'single_line_text_field', value: '/pages/' + r.page.handle },
         { ownerId: state.installationId, namespace: 'nagish', key: 'statement_form', type: 'json', value: JSON.stringify(formData()) }
       ] });
       if (m.metafieldsSet.userErrors.length) throw new Error(m.metafieldsSet.userErrors[0].message);
-      updateStatus();
-      toast(T.saved);
+      $('view-page').href = state.pageUrl; $('pub-ok').hidden = false;
+      toast(T.published.replace('✓ ', ''));
+      showStep(4);
     } catch (e) {
       toast(T.error + e.message, true);
     } finally {
@@ -433,22 +629,22 @@
     window.open('shopify://admin/themes/current/editor?context=apps&activateAppId=' + key + '/' + block, '_top');
   }
 
-  $('ui-lang').addEventListener('change', function () { uiLang = this.value; renderUI(); });
+  $('ui-lang').addEventListener('change', function () { uiLang = this.value; params.set('ui', '1'); renderUI(); });
   $('app').addEventListener('input', renderPreview);
   $('app').addEventListener('change', function (e) {
-    if (e.target.id === 'f-physical') $('phys-wrap').hidden = e.target.value !== 'yes';
+    if (e.target.name === 'mode') setMode(e.target.value);
     renderPreview();
   });
-  $('tab-gen').addEventListener('click', function () { setMode('gen'); });
-  $('tab-paste').addEventListener('click', function () { setMode('paste'); $('f-paste').focus(); });
+  document.querySelectorAll('[data-next]').forEach(function (b) {
+    b.addEventListener('click', function () { showStep(+b.getAttribute('data-next')); saveProgress(); });
+  });
   $('publish').addEventListener('click', publish);
   $('copy').addEventListener('click', copyText);
   document.querySelectorAll('[data-embed]').forEach(function (b) { b.addEventListener('click', function () { openEditor(b.getAttribute('data-embed')); }); });
 
   $('f-date').value = new Date().toISOString().slice(0, 10);
   renderUI();
-  load().then(function () { $('phys-wrap').hidden = $('f-physical').value !== 'yes'; renderPreview(); })
-        .catch(function (e) { if (window.shopify) toast(UI[uiLang].error + e.message, true); });
+  load().catch(function (e) { if (window.shopify) toast(UI[uiLang].error + e.message, true); });
 })();
 </script>
 </body>
