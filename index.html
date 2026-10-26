@@ -154,24 +154,9 @@
         </div>
       </div>
       <div class="q">
-        <span class="label" data-t="qDone"></span>
-        <p class="hint" data-t="qDoneHint"></p>
-        <div id="done-list"></div>
-      </div>
-      <div class="q">
         <label for="f-limits" data-t="qLimits"></label>
         <p class="hint" data-t="qLimitsHint"></p>
         <textarea id="f-limits" data-ph="phLimits"></textarea>
-      </div>
-      <div class="q" role="radiogroup" aria-labelledby="q-phys">
-        <span class="label" id="q-phys" data-t="qPhysical"></span>
-        <label class="choice"><input type="radio" name="physical" value="no" checked><span><b data-t="physNo"></b><span data-t="physNoText"></span></span></label>
-        <label class="choice"><input type="radio" name="physical" value="yes"><span><b data-t="physYes"></b><span data-t="physYesText"></span></span></label>
-      </div>
-      <div class="q" id="phys-wrap" hidden>
-        <label for="f-phys-text" data-t="qPhysText"></label>
-        <p class="hint" data-t="qPhysHint"></p>
-        <textarea id="f-phys-text"></textarea>
       </div>
     </div>
 
@@ -279,16 +264,9 @@
       qReach: 'איך אפשר ליצור איתו קשר?',
       qReachHint: 'מספיק טלפון או אימייל, אבל עדיף את שניהם.',
       fPhone: 'טלפון', fEmail: 'אימייל',
-      qDone: 'מה כבר עשיתם באתר?',
-      qDoneHint: 'סמנו רק מה שאתם בטוחים בו. לא יודעים? אל תסמנו. עדיף לכתוב פחות, אבל רק דברים נכונים.',
       qLimits: 'יש משהו באתר שאתם יודעים שעוד לא נגיש?',
       qLimitsHint: 'לא חובה. כל דבר בשורה נפרדת. כנות כאן דווקא מגינה עליכם.',
       phLimits: 'למשל: לחלק מתמונות המוצרים עוד אין תיאור\nלמשל: הסרטונים באתר בלי כתוביות',
-      qPhysical: 'יש לכם חנות פיזית שלקוחות מגיעים אליה?',
-      physNo: 'לא, רק אונליין', physNoText: 'כל המכירות דרך האתר.',
-      physYes: 'כן', physYesText: 'יש מקום שלקוחות מגיעים אליו.',
-      qPhysText: 'ספרו על הנגישות במקום',
-      qPhysHint: 'למשל: כתובת, האם יש חניית נכים, האם הכניסה בלי מדרגות, האם יש שירותי נכים.',
       pasteLabel: 'הדביקו כאן את ההצהרה שלכם',
       pasteHint: 'מעתיקים את הטקסט ממסמך או מאתר אחר, ומדביקים כאן (Ctrl+V או Cmd+V).',
       advanced: 'הגדרות נוספות (לא חובה)',
@@ -348,16 +326,9 @@
       qReach: 'How can people reach them?',
       qReachHint: 'Phone or email is enough, both is better.',
       fPhone: 'Phone', fEmail: 'Email',
-      qDone: 'What have you already done on your store?',
-      qDoneHint: 'Tick only what you are sure about. Not sure? Leave it unticked. It is better to say less, as long as it is true.',
       qLimits: 'Is there anything you know is not accessible yet?',
       qLimitsHint: 'Optional. One item per line. Being honest here protects you.',
       phLimits: 'For example: some product images have no description yet\nFor example: videos have no captions',
-      qPhysical: 'Do you have a physical store customers visit?',
-      physNo: 'No, online only', physNoText: 'All sales happen on the website.',
-      physYes: 'Yes', physYesText: 'Customers visit a physical place.',
-      qPhysText: 'Tell us about accessibility at your location',
-      qPhysHint: 'For example: address, accessible parking, step-free entrance, accessible restroom.',
       pasteLabel: 'Paste your statement here',
       pasteHint: 'Copy the text from a document or another website and paste it here (Ctrl+V or Cmd+V).',
       advanced: 'More settings (optional)',
@@ -386,26 +357,12 @@
   };
 
   /* statement template, in the statement's own language */
+  /* what Nagish itself adds to every store, so the statement can say it truthfully */
   var DONE = {
-    keyboard: { he: 'אפשר לנווט באתר באמצעות המקלדת בלבד (Tab, Shift+Tab, Enter).', en: 'The site can be navigated with the keyboard alone (Tab, Shift+Tab, Enter).' },
-    skip: { he: 'קישור "דילוג לתוכן" בתחילת כל עמוד, כדי לעקוף את התפריט.', en: 'A "skip to content" link at the top of every page.' },
-    labels: { he: 'לכפתורים, לקישורים ולאייקונים יש שמות ברורים לתוכנות קריאת מסך.', en: 'Buttons, links and icons have clear names for screen readers.' },
-    alt: { he: 'לתמונות יש תיאור טקסטואלי (טקסט חלופי).', en: 'Images have text descriptions (alt text).' },
-    contrast: { he: 'הצבעים באתר נבדקו והותאמו לניגודיות מספקת בין טקסט לרקע.', en: 'Colors were checked for sufficient contrast between text and background.' },
-    lang: { he: 'שפת האתר וכיוון הכתיבה מוגדרים נכון, כך שתוכנות הקראה מקריאות אותו כראוי.', en: 'The page language and text direction are set correctly for screen readers.' },
-    responsive: { he: 'האתר מותאם לצפייה בטלפון, בטאבלט ובמחשב.', en: 'The site works on phones, tablets and computers.' },
-    toolbar: { he: 'באתר יש תפריט נגישות שמאפשר להגדיל טקסט, לשנות ניגודיות וצבעים, להדגיש קישורים וכותרות, לעצור אנימציות ועוד.', en: 'The site has an accessibility toolbar for larger text, contrast and color options, highlighting links and headings, stopping animations and more.' }
-  };
-  /* plain-language checklist: [title, explanation] */
-  var DONE_UI = {
-    toolbar: { he: ['יש באתר כפתור נגישות', 'הכפתור של נגיש משלב 1. אם הדלקתם אותו – סמנו.'], en: ['There is an accessibility button', 'The Nagish button from step 1. If you turned it on, tick this.'] },
-    responsive: { he: ['האתר נראה טוב גם בטלפון', 'אפשר לקנות באתר בנוחות גם מהנייד.'], en: ['The store looks good on phones', 'People can shop comfortably from a phone.'] },
-    keyboard: { he: ['אפשר להשתמש באתר רק עם המקלדת', 'בלי עכבר: מקש Tab עובר בין הכפתורים, ו-Enter לוחץ.'], en: ['The store works with a keyboard only', 'No mouse: Tab moves between buttons and Enter clicks.'] },
-    skip: { he: ['יש קישור "דילוג לתוכן"', 'קישור נסתר בראש העמוד שמופיע כשלוחצים Tab, ומדלג על התפריט.'], en: ['There is a "skip to content" link', 'A hidden link at the top that appears when pressing Tab.'] },
-    labels: { he: ['לכפתורים ולאייקונים יש שמות', 'תוכנה שמקריאה את המסך לעיוורים יודעת להגיד מה כל כפתור עושה.'], en: ['Buttons and icons have names', 'Screen readers for blind visitors can say what each button does.'] },
-    alt: { he: ['לתמונות יש תיאור', 'לכל תמונת מוצר יש טקסט שמתאר אותה (ב-Shopify: "טקסט חלופי").'], en: ['Images have descriptions', 'Each product image has text describing it (in Shopify: "alt text").'] },
-    contrast: { he: ['בדקנו שהטקסט קריא על הרקע', 'הטקסט לא בהיר מדי ולא קטן מדי, כך שקל לקרוא אותו.'], en: ['Text is easy to read on its background', 'Text is not too light or too small.'] },
-    lang: { he: ['האתר מוגדר בשפה ובכיוון הנכונים', 'למשל: בעברית ומימין לשמאל.'], en: ['The store is set to the right language', 'For example: English, left to right.'] }
+    toolbar: { he: 'באתר יש תפריט נגישות שמאפשר להגדיל טקסט, לבחור גופן קריא או גופן לדיסלקציה, לשנות ניגודיות וצבעים, להתאים לעיוורון צבעים, להדגיש קישורים וכותרות, לעצור אנימציות, להגדיל את סמן העכבר ולהשתמש בסרגל או במסכת קריאה.', en: 'The site has an accessibility toolbar for larger text, a readable or dyslexia-friendly font, contrast and color options, color-blindness filters, highlighting links and headings, stopping animations, a bigger cursor and a reading guide or mask.' },
+    skip: { he: 'קישור "דילוג לתוכן" בתחילת כל עמוד, שמאפשר למשתמשי מקלדת לעקוף את התפריט.', en: 'A "skip to content" link at the top of every page lets keyboard users bypass the menu.' },
+    keyboard: { he: 'תפריט הנגישות עצמו נגיש במקלדת ובתוכנות קריאת מסך, ויש בו אפשרות להדגשה בולטת של המיקום במקלדת (פוקוס).', en: 'The toolbar itself works with the keyboard and screen readers, and can show a strong keyboard focus highlight.' },
+    structure: { he: 'אפשר לראות את מבנה העמוד (רשימת הכותרות) ולקפוץ ישירות לכל חלק בו.', en: 'Visitors can open a list of the page headings and jump straight to any section.' }
   };
   var STD = {
     il: { he: 'האתר הותאם לדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג–2013, ולתקן הישראלי ת"י 5568, המבוסס על הנחיות WCAG 2.0 ברמה AA.', en: 'The site was adapted to the Israeli Equal Rights for Persons with Disabilities (Accessibility Adjustments to Service) Regulations, 2013, and to Israeli Standard IS 5568, based on WCAG 2.0 level AA.' },
@@ -437,17 +394,6 @@
     $('ui-lang').value = uiLang;
     document.querySelectorAll('[data-t]').forEach(function (n) { n.textContent = T[n.getAttribute('data-t')]; });
     document.querySelectorAll('[data-ph]').forEach(function (n) { n.placeholder = T[n.getAttribute('data-ph')]; });
-    var list = $('done-list'), checked = {};
-    list.querySelectorAll('input').forEach(function (i) { checked[i.value] = i.checked; });
-    var first = !list.children.length;
-    list.innerHTML = '';
-    Object.keys(DONE_UI).forEach(function (k) {
-      var on = first ? (k === 'toolbar' || k === 'responsive') : checked[k];
-      var lab = document.createElement('label');
-      lab.className = 'choice';
-      lab.innerHTML = '<input type="checkbox" value="' + k + '"' + (on ? ' checked' : '') + '><span><b>' + esc(DONE_UI[k][uiLang][0]) + '</b><span>' + esc(DONE_UI[k][uiLang][1]) + '</span></span>';
-      list.appendChild(lab);
-    });
     showStep(state.step, true);
     renderPreview();
   }
@@ -472,8 +418,7 @@
     return {
       lang: $('f-lang').value, name: $('f-name').value.trim(), contact: $('f-contact').value.trim(),
       phone: $('f-phone').value.trim(), email: $('f-email').value.trim(), standard: $('f-standard').value,
-      done: Array.prototype.map.call($('done-list').querySelectorAll('input:checked'), function (i) { return i.value; }),
-      limits: $('f-limits').value, physical: radio('physical'), physText: $('f-phys-text').value,
+      limits: $('f-limits').value,
       date: $('f-date').value, paste: $('f-paste').value, title: $('f-title').value, mode: state.mode, step: state.step
     };
   }
@@ -481,9 +426,6 @@
     ['lang', 'name', 'contact', 'phone', 'email', 'standard', 'limits', 'date', 'title', 'paste'].forEach(function (k) {
       var el = $('f-' + k); if (el && d[k] != null) el.value = d[k];
     });
-    if (d.physText != null) $('f-phys-text').value = d.physText;
-    if (d.physical) setRadio('physical', d.physical);
-    if (d.done) $('done-list').querySelectorAll('input').forEach(function (i) { i.checked = d.done.indexOf(i.value) > -1; });
     if (d.mode) setMode(d.mode);
   }
 
@@ -500,11 +442,10 @@
       ? '<p>ב־' + name + ' אנחנו רוצים שכל אחד ואחת יוכלו לגלוש באתר, למצוא מוצרים ולהזמין בקלות – כולל אנשים עם מוגבלות. השקענו בהנגשת האתר ואנחנו ממשיכים לשפר אותו.</p>'
       : '<p>At ' + name + ' we want everyone, including people with disabilities, to be able to browse our site, find products and order easily. We have invested in making the site accessible and keep improving it.</p>');
     h.push('<h2>' + (he ? 'רמת הנגישות באתר' : 'Accessibility level') + '</h2><p>' + STD[d.standard][L] + '</p>');
-    if (d.done.length) {
-      h.push('<h2>' + (he ? 'מה עשינו כדי להנגיש את האתר' : 'What we did') + '</h2><ul>');
-      d.done.forEach(function (k) { h.push('<li>' + DONE[k][L] + '</li>'); });
-      h.push('</ul>');
-    }
+    h.push('<h2>' + (he ? 'מה עשינו כדי להנגיש את האתר' : 'What we did') + '</h2><ul>');
+    Object.keys(DONE).forEach(function (k) { h.push('<li>' + DONE[k][L] + '</li>'); });
+    h.push('</ul>');
+    h.push('<p>' + (he ? 'אנחנו ממשיכים לבדוק ולשפר את נגישות האתר כל הזמן.' : 'We keep checking and improving the accessibility of the site.') + '</p>');
     h.push('<h2>' + (he ? 'דפדפנים וטכנולוגיות מסייעות' : 'Browsers and assistive technology') + '</h2><p>' +
       (he ? 'האתר מיועד לעבודה בגרסאות העדכניות של הדפדפנים Chrome, Safari, Firefox ו־Edge, ובנוי כך שיתאים לשימוש עם תוכנות קריאת מסך נפוצות.'
           : 'The site is designed for current versions of Chrome, Safari, Firefox and Edge and for use with common screen readers.') + '</p>');
@@ -518,10 +459,6 @@
     if (d.phone) h.push('<li>' + (he ? 'טלפון: ' : 'Phone: ') + '<a href="tel:' + esc(d.phone.replace(/[^\d+]/g, '')) + '">' + esc(d.phone) + '</a></li>');
     if (d.email) h.push('<li>' + (he ? 'אימייל: ' : 'Email: ') + '<a href="mailto:' + esc(d.email) + '">' + esc(d.email) + '</a></li>');
     h.push('</ul>');
-    h.push('<h2>' + (he ? 'הסדרי נגישות פיזיים' : 'Physical accessibility') + '</h2><p>');
-    if (d.physical === 'yes') h.push(esc(d.physText).replace(/\n/g, '<br>'));
-    else h.push(he ? name + ' היא חנות מקוונת בלבד, ואין לה חנות פיזית הפתוחה לקהל.' : name + ' is an online-only store with no physical location open to the public.');
-    h.push('</p>');
     h.push('<p><strong>' + (he ? 'הצהרה זו עודכנה לאחרונה: ' : 'This statement was last updated: ') + esc(formatDate(d.date, L)) + '.</strong></p>');
     h.push('</div>');
     return h.join('\n');
@@ -538,7 +475,6 @@
     $('preview').innerHTML = state.mode === 'paste'
       ? (pastedHtml($('f-paste').value) || '<p class="muted">…</p>')
       : buildStatement(formData());
-    $('phys-wrap').hidden = state.mode !== 'gen' || radio('physical') !== 'yes';
   }
 
   function setMode(m) {
