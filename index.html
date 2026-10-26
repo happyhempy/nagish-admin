@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="shopify-api-key" content="366c9739a8a9b640c3f1eddf47bce02f">
+<script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
+<title>Nagish</title>
+<style>
+  :root{--bg:#f1f1f1;--card:#fff;--text:#303030;--muted:#616161;--border:#e3e3e3;--accent:#1f5fbf;--ok:#0c7a43;--warn-bg:#fff4e5;--warn:#8a4b00}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  main{max-width:960px;margin:0 auto;padding:20px 16px 60px}
+  h1{font-size:20px;margin:0 0 4px}
+  h2{font-size:16px;margin:0 0 8px}
+  p{margin:0 0 10px}
+  .muted{color:var(--muted)}
+  .top select{width:auto}
+  .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+  .card{background:var(--card);border-radius:12px;box-shadow:0 1px 0 rgba(0,0,0,.07),0 0 0 1px var(--border);padding:16px;margin-bottom:16px}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+  .step{border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+  .step b{font-size:15px}
+  button,.btn{font:inherit;border-radius:8px;padding:8px 14px;border:1px solid #8a8a8a;background:#fff;color:var(--text);cursor:pointer;min-height:36px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+  button.primary{background:#303030;color:#fff;border-color:#303030}
+  button:disabled{opacity:.5;cursor:default}
+  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+  .tabs button[aria-selected="true"]{background:#303030;color:#fff;border-color:#303030}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.grid{grid-template-columns:1fr}}
+  label{display:block;font-weight:600;margin-bottom:4px}
+  .field{margin-bottom:12px}
+  input[type=text],input[type=email],input[type=tel],input[type=date],select,textarea{width:100%;font:inherit;padding:8px 10px;border:1px solid #8a8a8a;border-radius:8px;background:#fff;color:var(--text)}
+  textarea{min-height:90px;resize:vertical}
+  .checks label{font-weight:400;display:flex;gap:8px;align-items:flex-start;margin:6px 0}
+  .checks input{margin-top:3px}
+  .hint{font-size:12px;color:var(--muted);margin-top:2px}
+  .preview{border:1px solid var(--border);border-radius:10px;padding:16px;max-height:520px;overflow:auto;background:#fafafa}
+  .preview h2{font-size:15px;margin:14px 0 6px}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+  .note{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:12px;margin-bottom:16px}
+  .status{font-weight:600}
+  .status.ok{color:var(--ok)}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main id="app">
+  <div class="top">
+    <div>
+      <h1 data-t="title"></h1>
+      <p class="muted" data-t="subtitle"></p>
+    </div>
+    <select id="ui-lang" aria-label="Language / שפה">
+      <option value="en">English</option>
+      <option value="he">עברית</option>
+    </select>
+  </div>
+
+  <section class="card" aria-labelledby="setup-h">
+    <h2 id="setup-h" data-t="setupTitle"></h2>
+    <div class="steps">
+      <div class="step">
+        <b data-t="step1"></b>
+        <p class="muted" data-t="step1Text"></p>
+        <button type="button" class="primary" data-embed="accessibility" data-t="openEditor"></button>
+      </div>
+      <div class="step">
+        <b data-t="step2"></b>
+        <p class="muted" data-t="step2Text"></p>
+        <button type="button" data-embed="cookies" data-t="openEditor"></button>
+      </div>
+      <div class="step">
+        <b data-t="step3"></b>
+        <p class="muted" data-t="step3Text"></p>
+        <p class="status" id="statement-status"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="note" data-t="legalNote"></div>
+
+  <section class="card" aria-labelledby="st-h">
+    <h2 id="st-h" data-t="statementTitle"></h2>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="tab-gen" aria-selected="true" aria-controls="pane-gen" data-t="tabGenerate"></button>
+      <button type="button" role="tab" id="tab-paste" aria-selected="false" aria-controls="pane-paste" data-t="tabPaste"></button>
+    </div>
+
+    <div id="pane-gen" role="tabpanel" aria-labelledby="tab-gen">
+      <div class="grid">
+        <div>
+          <div class="field">
+            <label for="f-lang" data-t="fLang"></label>
+            <select id="f-lang"><option value="he">עברית</option><option value="en">English</option></select>
+          </div>
+          <div class="field"><label for="f-name" data-t="fName"></label><input type="text" id="f-name"></div>
+          <div class="field"><label for="f-contact" data-t="fContact"></label><input type="text" id="f-contact"></div>
+          <div class="grid">
+            <div class="field"><label for="f-phone" data-t="fPhone"></label><input type="tel" id="f-phone" dir="ltr"></div>
+            <div class="field"><label for="f-email" data-t="fEmail"></label><input type="email" id="f-email" dir="ltr"></div>
+          </div>
+          <div class="field">
+            <label for="f-standard" data-t="fStandard"></label>
+            <select id="f-standard">
+              <option value="il">IS 5568 / WCAG 2.0 AA (Israel)</option>
+              <option value="wcag21">WCAG 2.1 AA</option>
+              <option value="wcag22">WCAG 2.2 AA</option>
+            </select>
+          </div>
+          <div class="field checks">
+            <label style="font-weight:600" data-t="fDone"></label>
+            <div id="done-list"></div>
+          </div>
+          <div class="field">
+            <label for="f-limits" data-t="fLimits"></label>
+            <textarea id="f-limits"></textarea>
+            <p class="hint" data-t="fLimitsHint"></p>
+          </div>
+          <div class="field">
+            <label for="f-physical" data-t="fPhysical"></label>
+            <select id="f-physical"><option value="no" data-t="physNo"></option><option value="yes" data-t="physYes"></option></select>
+          </div>
+          <div class="field" id="phys-wrap" hidden>
+            <label for="f-phys-text" data-t="fPhysText"></label>
+            <textarea id="f-phys-text"></textarea>
+          </div>
+          <div class="field"><label for="f-date" data-t="fDate"></label><input type="date" id="f-date"></div>
+        </div>
+        <div>
+          <p style="font-weight:600;margin-bottom:6px" data-t="preview"></p>
+          <div class="preview" id="preview" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="pane-paste" role="tabpanel" aria-labelledby="tab-paste" hidden>
+      <div class="field">
+        <label for="f-paste" data-t="pasteLabel"></label>
+        <textarea id="f-paste" style="min-height:280px"></textarea>
+        <p class="hint" data-t="pasteHint"></p>
+      </div>
+    </div>
+
+    <div class="field" style="max-width:420px">
+      <label for="f-title" data-t="fTitle"></label>
+      <input type="text" id="f-title">
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" id="publish" data-t="publish"></button>
+      <button type="button" id="copy" data-t="copy"></button>
+      <a class="btn" id="view-page" target="_blank" rel="noopener" hidden data-t="viewPage"></a>
+    </div>
+  </section>
+
+  <p class="muted" style="text-align:center" data-t="footer"></p>
+</main>
+
+<script>
+(function () {
+  var API = 'shopify:admin/api/2026-07/graphql.json';
+  var HANDLE = 'accessibility-statement';
+
+  var UI = {
+    en: {
+      title: 'Nagish – Accessibility toolbar, statement & cookie banner',
+      subtitle: 'Free. Set up in three steps.',
+      setupTitle: 'Setup',
+      step1: '1. Turn on the accessibility toolbar',
+      step1Text: 'Opens the theme editor with the toolbar ready to switch on. There you choose the position, color, size and language, then click Save.',
+      step2: '2. Cookie banner (optional)',
+      step2Text: 'A banner that lets visitors accept or refuse cookies and passes the choice to Shopify. If you already use another cookie banner, skip this.',
+      step3: '3. Accessibility statement',
+      step3Text: 'Fill in the form below (or paste your own statement) and click "Publish to store". The toolbar links to it automatically.',
+      openEditor: 'Open theme editor',
+      noStatement: 'No statement page yet',
+      hasStatement: 'Statement page is live',
+      legalNote: 'Important: a toolbar alone does not make a website accessible or legally compliant. It helps visitors adjust the display, but the site itself (theme, images, forms) must also be accessible. Review the statement and make sure everything in it is true for your store.',
+      statementTitle: 'Accessibility statement',
+      tabGenerate: 'Create with the generator',
+      tabPaste: 'Paste my own statement',
+      fLang: 'Statement language', fName: 'Business name', fContact: 'Accessibility coordinator name',
+      fPhone: 'Phone', fEmail: 'Email', fStandard: 'Standard',
+      fDone: 'What was done to make the site accessible (tick only what is true)',
+      fLimits: 'Known limitations', fLimitsHint: 'One per line. Being honest here protects you.',
+      fPhysical: 'Do you have a physical store open to the public?', physNo: 'No – online only', physYes: 'Yes',
+      fPhysText: 'Physical accessibility arrangements (address, parking, entrance, restrooms…)',
+      fDate: 'Last updated', preview: 'Preview',
+      pasteLabel: 'Paste your statement here', pasteHint: 'Plain text or HTML. Empty lines become new paragraphs.',
+      fTitle: 'Page title', publish: 'Publish to store', copy: 'Copy text', copied: 'Copied',
+      viewPage: 'View page', saving: 'Publishing…', saved: 'Statement published', error: 'Something went wrong: ',
+      emptyPaste: 'Paste the statement text first',
+      footer: 'Nagish is free. Visitor settings stay in their own browser – no personal data is collected.'
+    },
+    he: {
+      title: 'נגיש – תפריט נגישות, הצהרת נגישות ובאנר עוגיות',
+      subtitle: 'חינם. מתקינים בשלושה צעדים.',
+      setupTitle: 'הגדרה',
+      step1: '1. הפעלת תפריט הנגישות',
+      step1Text: 'פותח את עורך העיצוב עם התפריט מוכן להפעלה. שם בוחרים מיקום, צבע, גודל ושפה, ולוחצים "שמירה".',
+      step2: '2. באנר עוגיות (לא חובה)',
+      step2Text: 'באנר שמאפשר לגולשים לאשר או לסרב לעוגיות ומעביר את הבחירה ל-Shopify. אם יש לכם כבר באנר עוגיות אחר – דלגו.',
+      step3: '3. הצהרת נגישות',
+      step3Text: 'ממלאים את הטופס למטה (או מדביקים הצהרה קיימת) ולוחצים "פרסום בחנות". התפריט יקשר אליה אוטומטית.',
+      openEditor: 'פתיחת עורך העיצוב',
+      noStatement: 'עדיין אין עמוד הצהרה',
+      hasStatement: 'עמוד ההצהרה פעיל',
+      legalNote: 'חשוב: תפריט נגישות לבדו לא הופך אתר לנגיש ולא מספיק לעמידה בחוק. הוא עוזר לגולשים להתאים את התצוגה, אבל גם האתר עצמו (התבנית, התמונות, הטפסים) צריך להיות נגיש. עברו על ההצהרה וודאו שכל מה שכתוב בה נכון לגבי החנות שלכם.',
+      statementTitle: 'הצהרת נגישות',
+      tabGenerate: 'יצירה עם המחולל',
+      tabPaste: 'הדבקת הצהרה קיימת',
+      fLang: 'שפת ההצהרה', fName: 'שם העסק', fContact: 'שם רכז/ת הנגישות',
+      fPhone: 'טלפון', fEmail: 'אימייל', fStandard: 'תקן',
+      fDone: 'מה נעשה כדי להנגיש את האתר (סמנו רק מה שנכון)',
+      fLimits: 'מגבלות ידועות', fLimitsHint: 'כל מגבלה בשורה נפרדת. כנות כאן מגינה עליכם.',
+      fPhysical: 'יש לכם חנות פיזית פתוחה לקהל?', physNo: 'לא – אונליין בלבד', physYes: 'כן',
+      fPhysText: 'הסדרי נגישות פיזיים (כתובת, חניה, כניסה, שירותים…)',
+      fDate: 'תאריך עדכון', preview: 'תצוגה מקדימה',
+      pasteLabel: 'הדביקו כאן את ההצהרה', pasteHint: 'טקסט רגיל או HTML. שורה ריקה = פסקה חדשה.',
+      fTitle: 'כותרת העמוד', publish: 'פרסום בחנות', copy: 'העתקת הטקסט', copied: 'הועתק',
+      viewPage: 'צפייה בעמוד', saving: 'מפרסם…', saved: 'ההצהרה פורסמה', error: 'משהו השתבש: ',
+      emptyPaste: 'קודם הדביקו את טקסט ההצהרה',
+      footer: 'נגיש חינמית. הגדרות הגולשים נשמרות רק בדפדפן שלהם – לא נאסף מידע אישי.'
+    }
+  };
+
+  /* statement template, in the statement's own language */
+  var DONE = {
+    keyboard: { he: 'אפשר לנווט באתר באמצעות המקלדת בלבד (Tab, Shift+Tab, Enter).', en: 'The site can be navigated with the keyboard alone (Tab, Shift+Tab, Enter).' },
+    skip: { he: 'קישור "דילוג לתוכן" בתחילת כל עמוד, כדי לעקוף את התפריט.', en: 'A "skip to content" link at the top of every page.' },
+    labels: { he: 'לכפתורים, לקישורים ולאייקונים יש שמות ברורים לתוכנות קריאת מסך.', en: 'Buttons, links and icons have clear names for screen readers.' },
+    alt: { he: 'לתמונות יש תיאור טקסטואלי (טקסט חלופי).', en: 'Images have text descriptions (alt text).' },
+    contrast: { he: 'הצבעים באתר נבדקו והותאמו לניגודיות מספקת בין טקסט לרקע.', en: 'Colors were checked for sufficient contrast between text and background.' },
+    lang: { he: 'שפת האתר וכיוון הכתיבה מוגדרים נכון, כך שתוכנות הקראה מקריאות אותו כראוי.', en: 'The page language and text direction are set correctly for screen readers.' },
+    responsive: { he: 'האתר מותאם לצפייה בטלפון, בטאבלט ובמחשב.', en: 'The site works on phones, tablets and computers.' },
+    toolbar: { he: 'באתר יש תפריט נגישות שמאפשר להגדיל טקסט, לשנות ניגודיות וצבעים, להדגיש קישורים וכותרות, לעצור אנימציות ועוד.', en: 'The site has an accessibility toolbar for larger text, contrast and color options, highlighting links and headings, stopping animations and more.' }
+  };
+  var DONE_UI = {
+    keyboard: { en: 'Keyboard navigation', he: 'ניווט במקלדת' },
+    skip: { en: '"Skip to content" link', he: 'קישור "דילוג לתוכן"' },
+    labels: { en: 'Names for buttons and icons', he: 'שמות לכפתורים ואייקונים' },
+    alt: { en: 'Alt text on images', he: 'טקסט חלופי לתמונות' },
+    contrast: { en: 'Color contrast checked', he: 'ניגודיות צבעים נבדקה' },
+    lang: { en: 'Correct language and direction', he: 'שפה וכיוון כתיבה נכונים' },
+    responsive: { en: 'Works on mobile', he: 'מותאם לטלפון' },
+    toolbar: { en: 'Accessibility toolbar (Nagish)', he: 'תפריט נגישות (נגיש)' }
+  };
+  var STD = {
+    il: { he: 'האתר הותאם לדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג–2013, ולתקן הישראלי ת"י 5568, המבוסס על הנחיות WCAG 2.0 ברמה AA.', en: 'The site was adapted to the Israeli Equal Rights for Persons with Disabilities (Accessibility Adjustments to Service) Regulations, 2013, and to Israeli Standard IS 5568, based on WCAG 2.0 level AA.' },
+    wcag21: { he: 'האתר הותאם להנחיות WCAG 2.1 ברמה AA.', en: 'The site aims to conform to WCAG 2.1 level AA.' },
+    wcag22: { he: 'האתר הותאם להנחיות WCAG 2.2 ברמה AA.', en: 'The site aims to conform to WCAG 2.2 level AA.' }
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var params = new URLSearchParams(location.search);
+  var uiLang = /^he/i.test(params.get('locale') || '') ? 'he' : 'en';
+  var state = { installationId: null, pageId: null, pageUrl: null, mode: 'gen' };
+
+  function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  async function gql(query, variables) {
+    var res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: query, variables: variables || {} }) });
+    var json = await res.json();
+    if (json.errors) throw new Error(json.errors.map(function (e) { return e.message; }).join('; '));
+    return json.data;
+  }
+  function toast(msg, isError) { try { shopify.toast.show(msg, { isError: !!isError }); } catch (e) { alert(msg); } }
+
+  function renderUI() {
+    var T = UI[uiLang];
+    document.documentElement.lang = uiLang;
+    document.documentElement.dir = uiLang === 'he' ? 'rtl' : 'ltr';
+    $('ui-lang').value = uiLang;
+    document.querySelectorAll('[data-t]').forEach(function (n) { n.textContent = T[n.getAttribute('data-t')]; });
+    var list = $('done-list'), checked = {};
+    list.querySelectorAll('input').forEach(function (i) { checked[i.value] = i.checked; });
+    var first = !list.children.length;
+    list.innerHTML = '';
+    Object.keys(DONE).forEach(function (k) {
+      var lab = document.createElement('label');
+      var on = first ? (k === 'toolbar' || k === 'responsive') : checked[k];
+      lab.innerHTML = '<input type="checkbox" value="' + k + '"' + (on ? ' checked' : '') + '> <span>' + esc(DONE_UI[k][uiLang]) + '</span>';
+      list.appendChild(lab);
+    });
+    updateStatus();
+    renderPreview();
+  }
+
+  function updateStatus() {
+    var T = UI[uiLang], s = $('statement-status');
+    s.textContent = state.pageUrl ? T.hasStatement : T.noStatement;
+    s.className = 'status' + (state.pageUrl ? ' ok' : '');
+    if (state.pageUrl) { $('view-page').href = state.pageUrl; $('view-page').hidden = false; }
+  }
+
+  function formData() {
+    return {
+      lang: $('f-lang').value, name: $('f-name').value.trim(), contact: $('f-contact').value.trim(),
+      phone: $('f-phone').value.trim(), email: $('f-email').value.trim(), standard: $('f-standard').value,
+      done: Array.prototype.map.call($('done-list').querySelectorAll('input:checked'), function (i) { return i.value; }),
+      limits: $('f-limits').value, physical: $('f-physical').value, physText: $('f-phys-text').value,
+      date: $('f-date').value, paste: $('f-paste').value, title: $('f-title').value, mode: state.mode
+    };
+  }
+  function fillForm(d) {
+    ['lang', 'name', 'contact', 'phone', 'email', 'standard', 'limits', 'physical', 'date', 'title', 'paste'].forEach(function (k) {
+      var el = $('f-' + k); if (el && d[k] != null) el.value = d[k];
+    });
+    if (d.physText != null) $('f-phys-text').value = d.physText;
+    if (d.done) $('done-list').querySelectorAll('input').forEach(function (i) { i.checked = d.done.indexOf(i.value) > -1; });
+    if (d.mode) setMode(d.mode);
+  }
+
+  function formatDate(iso, lang) {
+    var d = iso ? new Date(iso + 'T12:00:00') : new Date();
+    try { return d.toLocaleDateString(lang === 'he' ? 'he-IL' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return iso; }
+  }
+
+  function buildStatement(d) {
+    var he = d.lang === 'he', L = d.lang, name = esc(d.name || (he ? 'העסק' : 'Our store'));
+    var h = [];
+    h.push('<div dir="' + (he ? 'rtl' : 'ltr') + '" lang="' + L + '">');
+    h.push(he
+      ? '<p>ב־' + name + ' אנחנו רוצים שכל אחד ואחת יוכלו לגלוש באתר, למצוא מוצרים ולהזמין בקלות – כולל אנשים עם מוגבלות. השקענו בהנגשת האתר ואנחנו ממשיכים לשפר אותו.</p>'
+      : '<p>At ' + name + ' we want everyone, including people with disabilities, to be able to browse our site, find products and order easily. We have invested in making the site accessible and keep improving it.</p>');
+    h.push('<h2>' + (he ? 'רמת הנגישות באתר' : 'Accessibility level') + '</h2><p>' + STD[d.standard][L] + '</p>');
+    if (d.done.length) {
+      h.push('<h2>' + (he ? 'מה עשינו כדי להנגיש את האתר' : 'What we did') + '</h2><ul>');
+      d.done.forEach(function (k) { h.push('<li>' + DONE[k][L] + '</li>'); });
+      h.push('</ul>');
+    }
+    h.push('<h2>' + (he ? 'דפדפנים וטכנולוגיות מסייעות' : 'Browsers and assistive technology') + '</h2><p>' +
+      (he ? 'האתר מיועד לעבודה בגרסאות העדכניות של הדפדפנים Chrome, Safari, Firefox ו־Edge, ובנוי כך שיתאים לשימוש עם תוכנות קריאת מסך נפוצות.'
+          : 'The site is designed for current versions of Chrome, Safari, Firefox and Edge and for use with common screen readers.') + '</p>');
+    var limits = d.limits.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+    h.push('<h2>' + (he ? 'מגבלות ידועות' : 'Known limitations') + '</h2>');
+    h.push('<p>' + (he ? 'למרות מאמצינו, ייתכן שחלקים מסוימים באתר עדיין אינם נגישים במלואם' : 'Despite our efforts, some parts of the site may not yet be fully accessible') + (limits.length ? ':</p><ul>' + limits.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>' : '.</p>'));
+    h.push('<p>' + (he ? 'רכיבים של ספקים חיצוניים (כמו עמודי התשלום) נמצאים באחריות הספקים. אם נתקלתם בבעיה – נשמח שתספרו לנו, ונטפל בה בהקדם.' : 'Third-party components (such as payment pages) are the responsibility of their providers. If you run into a problem, please tell us and we will fix it as soon as we can.') + '</p>');
+    h.push('<h2>' + (he ? 'פנייה לרכז הנגישות' : 'Contact our accessibility coordinator') + '</h2>');
+    h.push('<p>' + (he ? 'נתקלתם בקושי? יש לכם הצעה לשיפור? נשמח לשמוע. כדאי לציין את הקושי, את העמוד שבו נתקלתם בו ואת הדפדפן או תוכנת ההקראה שבהם השתמשתם.' : 'Found a problem or have a suggestion? Please tell us the issue, the page where it happened and the browser or assistive technology you used.') + '</p><ul>');
+    if (d.contact) h.push('<li>' + (he ? 'רכז/ת הנגישות: ' : 'Accessibility coordinator: ') + esc(d.contact) + '</li>');
+    if (d.phone) h.push('<li>' + (he ? 'טלפון: ' : 'Phone: ') + '<a href="tel:' + esc(d.phone.replace(/[^\d+]/g, '')) + '">' + esc(d.phone) + '</a></li>');
+    if (d.email) h.push('<li>' + (he ? 'אימייל: ' : 'Email: ') + '<a href="mailto:' + esc(d.email) + '">' + esc(d.email) + '</a></li>');
+    h.push('</ul>');
+    h.push('<h2>' + (he ? 'הסדרי נגישות פיזיים' : 'Physical accessibility') + '</h2><p>');
+    if (d.physical === 'yes') h.push(esc(d.physText).replace(/\n/g, '<br>'));
+    else h.push(he ? name + ' היא חנות מקוונת בלבד, ואין לה חנות פיזית הפתוחה לקהל.' : name + ' is an online-only store with no physical location open to the public.');
+    h.push('</p>');
+    h.push('<p><strong>' + (he ? 'הצהרה זו עודכנה לאחרונה: ' : 'This statement was last updated: ') + esc(formatDate(d.date, L)) + '.</strong></p>');
+    h.push('</div>');
+    return h.join('\n');
+  }
+
+  function pastedHtml(text) {
+    if (/<\/?(p|h\d|ul|ol|li|div|br|strong)\b/i.test(text)) return text;
+    return text.split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean)
+      .map(function (p) { return '<p>' + esc(p).replace(/\n/g, '<br>') + '</p>'; }).join('\n');
+  }
+
+  function currentHtml() { return state.mode === 'paste' ? pastedHtml($('f-paste').value) : buildStatement(formData()); }
+  function renderPreview() { $('preview').innerHTML = buildStatement(formData()); }
+
+  function setMode(m) {
+    state.mode = m;
+    $('tab-gen').setAttribute('aria-selected', m === 'gen'); $('tab-paste').setAttribute('aria-selected', m === 'paste');
+    $('pane-gen').hidden = m !== 'gen'; $('pane-paste').hidden = m !== 'paste';
+  }
+
+  async function load() {
+    var d = await gql('{ shop { name email primaryDomain { url } } currentAppInstallation { id metafield(namespace: "nagish", key: "statement_form") { value } } pages(first: 1, query: "handle:' + HANDLE + '") { nodes { id handle title } } }');
+    state.installationId = d.currentAppInstallation.id;
+    state.shopUrl = d.shop.primaryDomain.url;
+    var saved = null;
+    try { saved = JSON.parse(d.currentAppInstallation.metafield && d.currentAppInstallation.metafield.value); } catch (e) {}
+    if (saved) fillForm(saved);
+    else {
+      $('f-name').value = d.shop.name; $('f-email').value = d.shop.email || '';
+      $('f-lang').value = uiLang; $('f-title').value = uiLang === 'he' ? 'הצהרת נגישות' : 'Accessibility statement';
+    }
+    var page = d.pages.nodes[0];
+    if (page) { state.pageId = page.id; state.pageUrl = state.shopUrl + '/pages/' + page.handle; }
+    updateStatus(); renderPreview();
+  }
+
+  async function publish() {
+    var T = UI[uiLang], btn = $('publish');
+    if (state.mode === 'paste' && !$('f-paste').value.trim()) { toast(T.emptyPaste, true); return; }
+    btn.disabled = true; btn.textContent = T.saving;
+    try {
+      var title = $('f-title').value.trim() || ($('f-lang').value === 'he' ? 'הצהרת נגישות' : 'Accessibility statement');
+      var page = { title: title, body: currentHtml(), isPublished: true };
+      var r, errs;
+      if (state.pageId) {
+        r = await gql('mutation($id: ID!, $page: PageUpdateInput!) { pageUpdate(id: $id, page: $page) { page { id handle } userErrors { message } } }', { id: state.pageId, page: page });
+        r = r.pageUpdate;
+      } else {
+        page.handle = HANDLE;
+        r = await gql('mutation($page: PageCreateInput!) { pageCreate(page: $page) { page { id handle } userErrors { message } } }', { page: page });
+        r = r.pageCreate;
+      }
+      errs = r.userErrors || [];
+      if (errs.length) throw new Error(errs.map(function (e) { return e.message; }).join('; '));
+      state.pageId = r.page.id;
+      state.pageUrl = state.shopUrl + '/pages/' + r.page.handle;
+      var m = await gql('mutation($m: [MetafieldsSetInput!]!) { metafieldsSet(metafields: $m) { userErrors { message } } }', { m: [
+        { ownerId: state.installationId, namespace: 'nagish', key: 'statement_url', type: 'single_line_text_field', value: '/pages/' + r.page.handle },
+        { ownerId: state.installationId, namespace: 'nagish', key: 'statement_form', type: 'json', value: JSON.stringify(formData()) }
+      ] });
+      if (m.metafieldsSet.userErrors.length) throw new Error(m.metafieldsSet.userErrors[0].message);
+      updateStatus();
+      toast(T.saved);
+    } catch (e) {
+      toast(T.error + e.message, true);
+    } finally {
+      btn.disabled = false; btn.textContent = T.publish;
+    }
+  }
+
+  async function copyText() {
+    var tmp = document.createElement('div'); tmp.innerHTML = currentHtml();
+    var text = tmp.innerText || tmp.textContent;
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([tmp.innerHTML], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]);
+    } catch (e) {
+      try { await navigator.clipboard.writeText(text); } catch (e2) { return; }
+    }
+    toast(UI[uiLang].copied);
+  }
+
+  function openEditor(block) {
+    var key = document.querySelector('meta[name="shopify-api-key"]').content;
+    window.open('shopify://admin/themes/current/editor?context=apps&activateAppId=' + key + '/' + block, '_top');
+  }
+
+  $('ui-lang').addEventListener('change', function () { uiLang = this.value; renderUI(); });
+  $('app').addEventListener('input', renderPreview);
+  $('app').addEventListener('change', function (e) {
+    if (e.target.id === 'f-physical') $('phys-wrap').hidden = e.target.value !== 'yes';
+    renderPreview();
+  });
+  $('tab-gen').addEventListener('click', function () { setMode('gen'); });
+  $('tab-paste').addEventListener('click', function () { setMode('paste'); $('f-paste').focus(); });
+  $('publish').addEventListener('click', publish);
+  $('copy').addEventListener('click', copyText);
+  document.querySelectorAll('[data-embed]').forEach(function (b) { b.addEventListener('click', function () { openEditor(b.getAttribute('data-embed')); }); });
+
+  $('f-date').value = new Date().toISOString().slice(0, 10);
+  renderUI();
+  load().then(function () { $('phys-wrap').hidden = $('f-physical').value !== 'yes'; renderPreview(); })
+        .catch(function (e) { if (window.shopify) toast(UI[uiLang].error + e.message, true); });
+})();
+</script>
+</body>
+</html>
