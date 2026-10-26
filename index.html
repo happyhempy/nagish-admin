@@ -79,6 +79,8 @@
   .swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   .swatch{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #999;cursor:pointer;padding:0;min-height:0}
   .swatch[aria-pressed="true"]{box-shadow:0 0 0 3px var(--text)}
+  .color-code{flex-basis:100%;margin-top:6px}
+  input[aria-invalid="true"]{border-color:var(--bad);box-shadow:0 0 0 1px var(--bad)}
   .swatches input[type=color]{width:46px;height:40px;border:1px solid #8a8a8a;border-radius:8px;padding:2px;background:#fff;cursor:pointer}
   .mock{position:relative;aspect-ratio:16/11;border:1px solid #bbb;border-radius:10px;overflow:hidden;background:#fff}
   .mock .bar{height:22px;background:#e9e9e9;border-bottom:1px solid #ccc;display:flex;align-items:center;gap:5px;padding:0 8px;direction:ltr}
@@ -414,7 +416,7 @@
       s2Intro: 'בוחרים כאן, ורואים מיד בתצוגה המקדימה איך זה ייראה. לא בטוחים? אפשר להשאיר הכל כמו שזה וללחוץ "שמירה והמשך".',
       qPos: 'איפה הכפתור יופיע במסך?', qPosHint: 'לחצו על המקום שאתם רוצים. כדאי לבחור מקום שלא מסתיר כפתורים אחרים (כמו וואטסאפ או צ\'אט).',
       posTL: 'למעלה משמאל', posTR: 'למעלה מימין', posML: 'באמצע משמאל', posMR: 'באמצע מימין', posBL: 'למטה משמאל', posBR: 'למטה מימין',
-      qColor: 'באיזה צבע?', customColor: 'צבע אחר',
+      qColor: 'באיזה צבע?', customColor: 'בחירת צבע', colorCode: 'או כתבו קוד צבע', colorCodeHint: 'כל צבע שתרצו. למשל #47792b (קוד צבע של המותג שלכם).', colorCodeBad: 'הקוד לא נראה תקין. קוד צבע נראה ככה: #47792b',
       qSize: 'באיזה גודל?', sizeS: 'קטן', sizeM: 'בינוני', sizeL: 'גדול',
       qLang: 'באיזו שפה יהיה התפריט?', qLangHint: '"אוטומטי" אומר: בעברית לגולשים באתר העברי, ובאנגלית באתר האנגלי.',
       langAuto: 'אוטומטי (לפי שפת האתר)',
@@ -500,7 +502,7 @@
       s2Intro: 'Choose here and see the result right away in the preview. Not sure? Leave everything as it is and click "Save and continue".',
       qPos: 'Where should the button appear?', qPosHint: 'Click the spot you want. Pick a spot that does not cover other buttons (like chat or WhatsApp).',
       posTL: 'Top left', posTR: 'Top right', posML: 'Middle left', posMR: 'Middle right', posBL: 'Bottom left', posBR: 'Bottom right',
-      qColor: 'Which color?', customColor: 'Other color',
+      qColor: 'Which color?', customColor: 'Pick a color', colorCode: 'Or type a color code', colorCodeHint: 'Any color you like. For example #47792b (your brand color).', colorCodeBad: 'That code does not look right. A color code looks like this: #47792b',
       qSize: 'Which size?', sizeS: 'Small', sizeM: 'Medium', sizeL: 'Large',
       qLang: 'Menu language', qLangHint: '"Automatic" means it follows your store\'s language.',
       langAuto: 'Automatic (store language)',
@@ -727,12 +729,27 @@
       b.addEventListener('click', function () { design.color = c; renderSwatches(); renderMocks(); });
       box.appendChild(b);
     });
-    var lab = document.createElement('label');
-    lab.style.cssText = 'display:inline-flex;align-items:center;gap:6px;font-size:14px';
-    lab.innerHTML = '<input type="color" value="' + esc(design.color) + '"> ' + esc(T('customColor'));
-    lab.querySelector('input').addEventListener('input', function () { design.color = this.value; box.querySelectorAll('.swatch').forEach(function (s) { s.setAttribute('aria-pressed', 'false'); }); renderMocks(); });
-    box.appendChild(lab);
+    /* any color: native picker + a free hex code field, kept in sync */
+    var wrap = document.createElement('div');
+    wrap.className = 'color-code';
+    wrap.innerHTML = '<label for="d-color-code" class="sublabel">' + esc(T('colorCode')) + '</label>' +
+      '<div style="display:flex;gap:8px;align-items:center"><input type="color" id="d-color-picker" aria-label="' + esc(T('customColor')) + '" value="' + esc(full(design.color)) + '">' +
+      '<input type="text" id="d-color-code" dir="ltr" maxlength="9" spellcheck="false" autocomplete="off" value="' + esc(design.color) + '" style="max-width:140px;font-family:monospace"></div>' +
+      '<p class="hint" id="d-color-hint" style="margin-top:4px">' + esc(T('colorCodeHint')) + '</p>';
+    box.appendChild(wrap);
+    var picker = wrap.querySelector('#d-color-picker'), code = wrap.querySelector('#d-color-code'), hint = wrap.querySelector('#d-color-hint');
+    function unpress() { box.querySelectorAll('.swatch').forEach(function (s) { s.setAttribute('aria-pressed', COLORS.indexOf(design.color.toLowerCase()) > -1 && s.getAttribute('aria-label') === design.color.toLowerCase() ? 'true' : 'false'); }); }
+    picker.addEventListener('input', function () { design.color = this.value; code.value = this.value; code.removeAttribute('aria-invalid'); hint.textContent = T('colorCodeHint'); unpress(); renderMocks(); });
+    code.addEventListener('input', function () {
+      var v = this.value.trim(); if (v && v.charAt(0) !== '#') v = '#' + v;
+      if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) {
+        design.color = v.toLowerCase(); picker.value = full(design.color);
+        code.removeAttribute('aria-invalid'); hint.textContent = T('colorCodeHint'); unpress(); renderMocks();
+      } else { code.setAttribute('aria-invalid', 'true'); hint.textContent = T('colorCodeBad'); }
+    });
   }
+  /* #abc -> #aabbcc, for the native color picker */
+  function full(c) { return /^#[0-9a-f]{3}$/i.test(c) ? '#' + c.slice(1).split('').map(function (x) { return x + x; }).join('') : c; }
   function readDesign() {
     design.position = radio('position') || design.position;
     design.size = radio('size') || design.size;
