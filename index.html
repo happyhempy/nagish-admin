@@ -896,6 +896,13 @@
   $('recheck').addEventListener('click', checkEmbed);
 
   $('f-date').value = new Date().toISOString().slice(0, 10);
+  /* ?step=N&demo=1 – only used to take App Store screenshots outside Shopify */
+  if (params.get('demo')) {
+    state.step = +params.get('step') || 1;
+    $('f-name').value = 'Olive & Co.'; $('f-contact').value = 'Dana Cohen'; $('f-email').value = 'hello@oliveandco.com'; $('f-phone').value = '+1 555 0100';
+    $('f-lang').value = 'en'; $('f-standard').value = 'wcag21'; $('f-title').value = 'Accessibility statement';
+    design.color = '#6d28d9'; design.position = 'bottom-right'; design.cookies.on = params.get('step') === '3';
+  }
   fillDesign();
   renderUI();
   load().catch(function (e) { if (window.shopify && shopify.config && shopify.config.shop) toast(T('error') + e.message, true); });
