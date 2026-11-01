@@ -661,8 +661,33 @@
     h.push('</div>');
     return h.join('\n');
   }
+  /* Pasted statements may come from anywhere: keep only plain text formatting and safe links.
+     DOMParser builds an inert document, so nothing in the pasted HTML runs or loads while we read it. */
+  var SAFE_TAGS = { P: 1, BR: 1, H1: 1, H2: 1, H3: 1, H4: 1, H5: 1, H6: 1, UL: 1, OL: 1, LI: 1, STRONG: 1, B: 1, EM: 1, I: 1, U: 1, A: 1, BLOCKQUOTE: 1, DIV: 1, SPAN: 1 };
+  function safeHref(v) {
+    v = String(v || '').trim();
+    return /^(https?:|mailto:|tel:|\/(?!\/)|#)/i.test(v) ? v : '';
+  }
+  function cleanHtml(html) {
+    var src = new DOMParser().parseFromString('<body>' + html + '</body>', 'text/html').body;
+    var doc = document.implementation.createHTMLDocument('');
+    var out = doc.createElement('div');
+    (function copy(from, to) {
+      Array.prototype.forEach.call(from.childNodes, function (n) {
+        if (n.nodeType === 3) { to.appendChild(doc.createTextNode(n.nodeValue)); return; }
+        if (n.nodeType !== 1) return;
+        if (!SAFE_TAGS[n.tagName]) { if (!/^(SCRIPT|STYLE|IFRAME|OBJECT|EMBED|TEMPLATE|NOSCRIPT|SVG|MATH)$/.test(n.tagName)) copy(n, to); return; }
+        var e = doc.createElement(n.tagName.toLowerCase());
+        if (n.tagName === 'A') { var h = safeHref(n.getAttribute('href')); if (h) e.setAttribute('href', h); }
+        ['dir', 'lang'].forEach(function (a) { var v = n.getAttribute(a); if (v && /^[a-zA-Z-]{1,12}$/.test(v)) e.setAttribute(a, v); });
+        copy(n, e); to.appendChild(e);
+      });
+    })(src, out);
+    return out.innerHTML;
+  }
+
   function pastedHtml(text) {
-    if (/<\/?(p|h\d|ul|ol|li|div|br|strong)\b/i.test(text)) return text;
+    if (/<\/?(p|h\d|ul|ol|li|div|br|strong)\b/i.test(text)) return cleanHtml(text);
     return text.split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean)
       .map(function (p) { return '<p>' + esc(p).replace(/\n/g, '<br>') + '</p>'; }).join('\n');
   }
@@ -684,11 +709,15 @@
       var title = $('f-title').value.trim() || ($('f-lang').value === 'he' ? 'הצהרת נגישות' : 'Accessibility statement');
       var page = { title: title, body: currentHtml(), isPublished: true };
       var r;
+      var CREATE = 'mutation($page: PageCreateInput!) { pageCreate(page: $page) { page { id handle } userErrors { field message } } }';
       if (state.pageId) {
         r = (await gql('mutation($id: ID!, $page: PageUpdateInput!) { pageUpdate(id: $id, page: $page) { page { id handle } userErrors { message } } }', { id: state.pageId, page: page })).pageUpdate;
       } else {
-        page.handle = HANDLE;
-        r = (await gql('mutation($page: PageCreateInput!) { pageCreate(page: $page) { page { id handle } userErrors { message } } }', { page: page })).pageCreate;
+        /* never take over a page the merchant already has at this address: if the handle is taken, Shopify picks a new one */
+        r = (await gql(CREATE, { page: Object.assign({ handle: HANDLE }, page) })).pageCreate;
+        if (r.userErrors && r.userErrors.some(function (e) { return (e.field || []).join('.').indexOf('handle') > -1; })) {
+          r = (await gql(CREATE, { page: page })).pageCreate;
+        }
       }
       if (r.userErrors && r.userErrors.length) throw new Error(r.userErrors.map(function (e) { return e.message; }).join('; '));
       state.pageId = r.page.id;
@@ -696,6 +725,7 @@
       state.step = 2;
       await setMetafields([
         ['statement_url', 'single_line_text_field', '/pages/' + r.page.handle],
+        ['statement_page_id', 'single_line_text_field', r.page.id],
         ['statement_form', 'json', JSON.stringify(formData())]
       ]);
       $('view-page').href = state.pageUrl; $('pub-ok').hidden = false;
@@ -806,8 +836,26 @@
     }
     mock.appendChild(c);
   }
+
+  /* Only known values leave this screen; free text can't carry markup into the storefront. */
+  function cleanDesign(d) {
+    function pick(v, list, def) { return list.indexOf(v) > -1 ? v : def; }
+    function text(v, max) { return String(v || '').replace(/[<>]/g, '').slice(0, max); }
+    var c = d.cookies || {};
+    return {
+      position: pick(d.position, ['bottom-left', 'bottom-right', 'middle-left', 'middle-right', 'top-left', 'top-right'], 'bottom-left'),
+      color: /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(d.color) ? d.color : '#1f5fbf',
+      size: pick(d.size, ['small', 'medium', 'large'], 'medium'),
+      lang: pick(d.lang, ['auto', 'he', 'en'], 'auto'),
+      offsetX: Math.min(100, Math.max(0, parseInt(d.offsetX, 10) || 0)),
+      offsetY: Math.min(200, Math.max(0, parseInt(d.offsetY, 10) || 0)),
+      mobile: d.mobile !== false,
+      cookies: { on: !!c.on, layout: pick(c.layout, ['bottom', 'top', 'box-start', 'box-end'], 'bottom'), title: text(c.title, 120), text: text(c.text, 600) }
+    };
+  }
   async function saveDesign(next, btn) {
     readDesign();
+    design = cleanDesign(design);
     btn.disabled = true; var label = btn.textContent; btn.textContent = T('saving');
     try {
       await setMetafields([['design', 'json', JSON.stringify(design)], ['statement_form', 'json', JSON.stringify(Object.assign(formData(), { step: next }))]]);
@@ -847,7 +895,7 @@
 
   /* ---------- load ---------- */
   async function load() {
-    var d = await gql('{ shop { name email primaryDomain { url } } shopLocales { locale primary } currentAppInstallation { id form: metafield(namespace: "nagish", key: "statement_form") { value } design: metafield(namespace: "nagish", key: "design") { value } } pages(first: 1, query: "handle:' + HANDLE + '") { nodes { id handle } } }');
+    var d = await gql('{ shop { name email primaryDomain { url } } shopLocales { locale primary } currentAppInstallation { id form: metafield(namespace: "nagish", key: "statement_form") { value } design: metafield(namespace: "nagish", key: "design") { value } pageId: metafield(namespace: "nagish", key: "statement_page_id") { value } url: metafield(namespace: "nagish", key: "statement_url") { value } } }');
     state.installationId = d.currentAppInstallation.id;
     state.shopUrl = d.shop.primaryDomain.url;
     var primary = (d.shopLocales.filter(function (l) { return l.primary; })[0] || {}).locale || '';
@@ -863,7 +911,14 @@
       $('f-standard').value = storeLang === 'he' ? 'il' : 'wcag21';
       $('f-title').value = storeLang === 'he' ? 'הצהרת נגישות' : 'Accessibility statement';
     }
-    var page = d.pages.nodes[0];
+    /* the statement page is the one this app created (its id is saved); older installs only saved its address */
+    var inst = d.currentAppInstallation, page = null;
+    if (inst.pageId && inst.pageId.value) {
+      page = (await gql('query($id: ID!) { page(id: $id) { id handle } }', { id: inst.pageId.value })).page;
+    } else if (inst.url && inst.url.value) {
+      var h = inst.url.value.replace(/^\/pages\//, '');
+      page = ((await gql('query($q: String!) { pages(first: 1, query: $q) { nodes { id handle } } }', { q: 'handle:' + h })).pages.nodes || [])[0] || null;
+    }
     if (page) {
       state.pageId = page.id; state.pageUrl = state.shopUrl + '/pages/' + page.handle;
       $('view-page').href = state.pageUrl; $('pub-ok').hidden = false;
